@@ -2,19 +2,31 @@ const authBaseUrl = "https://accounts.spotify.com/authorize?";
 
 
 
+
+
+
 function receiveAuthToken() {
     if (!window.location.hash) {
         return false
     }
-    return window.location.hash
+    console.log("hash is: " + window.location.hash);
+    const tokenSlices = window.location.hash.split(/[=&]/);
+    console.log("tokenSlices are: " + tokenSlices);
+    return tokenSlices[1]
 }
 
-let token = receiveAuthToken();
-if (!token) {
-    /* ask for login again */
-} else {
-    /* show rest of app */
+
+function handleAuth() {
+    let token = receiveAuthToken();
+    console.log(token);
+    if (!token) {
+        console.log("ask for token");
+    } else {
+        console.log("show rest of app");
+    }
 }
+
+
 
 
 function formatUrl(params) {
@@ -33,9 +45,7 @@ function getToken() {
     const url = authBaseUrl + formatUrl(params);
 
     console.log(url);
-
- /*    fetch(url)
-        .then(response =>) */
+    window.open(url);
 }
 
 
@@ -50,4 +60,5 @@ function handleClicks() {
 $(function() {
     console.log("App ready!");
     handleClicks();
+    handleAuth();
 })
