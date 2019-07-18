@@ -20,6 +20,11 @@
     height: 50px;
     margin: 0 auto;
     margin-bottom: 20px;
+    box-shadow: 4px 4px 20px -2px rgba(0,0,0,.35);
+}
+
+.playlist:hover {
+    box-shadow: 4px 4px 20px -2px rgba(250, 0, 0, 0.35);
 }
 
 .playlist > h3 {

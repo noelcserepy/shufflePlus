@@ -1,14 +1,121 @@
 const authBaseUrl = "https://accounts.spotify.com/authorize";
 const userBaseUrl = "https://api.spotify.com/v1/me";
 const playlistBaseUrl = "https://api.spotify.com/v1/users/";
+const trackBaseUrl = "https://api.spotify.com/v1/playlists/";
+const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
+
+
+function addPlaylist(options, trackEnergy, user) {
+    console.log("Adding playlist...");
+    const ids = [];
+
+    for (let i of trackEnergy) {
+        ids.push(i[0]);
+    }
+
+    const params = {
+        ids: ids,
+    }
+
+    const newOptions = {
+        method: "POST",
+        headers: {
+            'Authorization': options.headers["'Authorization"],
+            'Content-Type': 'application/json',
+        },
+    }
+
+    const addPlaylistUrl = playlistBaseUrl + user.id + "/playlists";
+
+    
+
+}
+
+
+function sortTracks(options, trackFeatures, user) {
+    console.log("Sorting tracks...");
+
+    const trackEnergy = [];
+
+    for (let i of trackFeatures.audio_features) {
+        let trackI = [i.id, i.energy]
+        trackEnergy.push(trackI);
+    }
+
+    trackEnergy.sort(function(a, b) {
+        return a[1] - b[1]
+    });
+
+    console.log(trackEnergy);
+
+    addPlaylist(options, trackEnergy, user);
+}
+
+
+function getFeatures(options, tracks, user) {
+    console.log("Getting track features...");
+    console.log(JSON.stringify(tracks));
+
+    const trackIds = [];
+
+    for (let i of tracks.items) {
+        trackIds.push(i.track.id);
+    }
+
+    const params = {
+        ids: trackIds,
+    }
+
+    const featuresUrl = featuresBaseUrl + "?" + formatUrl(params);
+
+
+    return fetch(featuresUrl, options)
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+            return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => sortTracks(options, responseJson, user))
+        .catch(error => {
+            alert(`Something went wrong with tracks: ${error.message}`);
+        })
+
+}
 
 
 
+function handlePlaylistClicks(options, user) {
+    console.log("Getting tracklist...");
+    $(".playlist").click(function(event) {
+        event.preventDefault();
+        
+        const trackUrl = trackBaseUrl + $(this).attr("data-id") + "/tracks";
 
-function loadMain(token, user, options, playlists) {
+        console.log(`trackUrl is: ${trackUrl}`);
+
+        return fetch(trackUrl, options)
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+            return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => getFeatures(options, responseJson, user))
+        .catch(error => {
+            alert(`Something went wrong with tracks: ${error.message}`);
+        })
+
+
+    })
+}
+
+
+
+function loadMain(options, playlists, user) {
     console.log("Loading main...")
-
-    console.log("loadMain received user: " + JSON.stringify(user));
     console.log("loadMain received playlists: " + JSON.stringify(playlists));
 
     $("header").addClass("hidden");
@@ -33,8 +140,8 @@ function loadMain(token, user, options, playlists) {
                 $(`.playlist[data-id=${i.id}]`).append(`
                     <img class="playlist-image" data-id="${i.id}" src="media/spotify.png"></img>`);
             }
-        
     }
+    handlePlaylistClicks(options, user);
     
 }
 
@@ -42,7 +149,7 @@ function loadMain(token, user, options, playlists) {
 
 
 
-function getPlaylists(token, user, options) {
+function getPlaylists(user, options) {
     console.log("User ID: " + user.id);
 
     const params = {
@@ -59,7 +166,7 @@ function getPlaylists(token, user, options) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => loadMain(token, user, options, responseJson))
+        .then(responseJson => loadMain(options, responseJson, user))
         .catch(error => {
             alert(`Something went wrong with playlists: ${error.message}`);
         })
@@ -88,7 +195,7 @@ function getUser(token) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => getPlaylists(token, responseJson, options))
+        .then(responseJson => getPlaylists(responseJson, options))
         .catch(error => {
             alert(`Something went wrong with user: ${error.message}`);
         })
