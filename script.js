@@ -11,6 +11,8 @@ function loadMain(token, user, options, playlists) {
     console.log("loadMain received user: " + JSON.stringify(user));
     console.log("loadMain received playlists: " + JSON.stringify(playlists));
 
+    $("header").addClass("hidden");
+
     $("main").append(`
         <div class="playlist-holder">
             <h2>Choose one of your playlists to sort:</h2>
@@ -19,11 +21,18 @@ function loadMain(token, user, options, playlists) {
         </div>`);
     
     for (let i of playlists.items) {
+        console.log(JSON.stringify(i));
         $(".playlist-list").append(`
             <li class="playlist" data-id="${i.id}">
-                <p>${i.name}</p>
-                <img src="${i.images[0].url}">
+                <h3>${i.name}</h3>
             `);
+            if (i.images[0]) {
+                $(`.playlist[data-id=${i.id}]`).append(`
+                    <img class="playlist-image" data-id="${i.id}" src="${i.images[0].url}"></img>`);
+            } else {
+                $(`.playlist[data-id=${i.id}]`).append(`
+                    <img class="playlist-image" data-id="${i.id}" src="media/spotify.png"></img>`);
+            }
         
     }
     
@@ -39,21 +48,21 @@ function getPlaylists(token, user, options) {
     const params = {
         limit: 50,
     }
-    const playlistUrl = playlistBaseUrl + user.id + "/playlists" + "?" + formatUrl(params)
-
+    const playlistUrl = playlistBaseUrl + user.id + "/playlists" + "?" + formatUrl(params);
+    console.log(`playlistUrl is : ${playlistUrl}`);
 
     return fetch(playlistUrl, options)
-    .then(response => {
-        console.log(response)
-        if (response.ok) {
-        return response.json();
-        }
-        throw new Error(response.statusText);
-    })
-    .then(responseJson => loadMain(token, user, options, responseJson))
-    .catch(error => {
-        alert(`Something went wrong: ${error.message}`);
-    })
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+            return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => loadMain(token, user, options, responseJson))
+        .catch(error => {
+            alert(`Something went wrong with playlists: ${error.message}`);
+        })
 
 }
 
@@ -81,7 +90,7 @@ function getUser(token) {
         })
         .then(responseJson => getPlaylists(token, responseJson, options))
         .catch(error => {
-            alert(`Something went wrong: ${error.message}`);
+            alert(`Something went wrong with user: ${error.message}`);
         })
 }
 
