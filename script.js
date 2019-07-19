@@ -5,21 +5,51 @@ const trackBaseUrl = "https://api.spotify.com/v1/playlists/";
 const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 
 
-function addTracks(options, trackEnergy, user) {
-    const ids = [];
-
-    for (let i of trackEnergy) {
-        ids.push(i[0]);
+function addTracks(options, sortedTracks, user, newPlaylist) {
+    const uris = [];
+    for (let i of sortedTracks) {
+        uris.push(i[0]);
     }
 
-    const params = {
-        ids: ids,
+    console.log(uris);
+
+    const bodyOptions = {
+        uris: uris,
     }
+
+    const addTracksOptions = {
+        method: "POST",
+        headers: {
+            'Authorization': options.headers.Authorization,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(bodyOptions),
+    };
+
+    console.log(JSON.stringify(addTracksOptions));
+
+    const addTracksUrl = trackBaseUrl + newPlaylist.id + "/tracks";
+
+    return fetch(addTracksUrl, addTracksOptions)
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+                console.log("Playlist created");
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => console.log("added tracks: " + responseJson))
+        .catch(error => {
+            alert(`Something went wrong with tracks: ${error.message}`);
+        })
+
+
 }
 
 
 
-function addPlaylist(options, trackEnergy, user) {
+function addPlaylist(options, sortedTracks, user) {
     console.log("Adding playlist...");
 
     const bodyOptions = {
@@ -27,7 +57,7 @@ function addPlaylist(options, trackEnergy, user) {
         description: "Created by shufflePlus. Increasing energy",
     };
 
-    const newOptions = {
+    const addPlaylistOptions = {
         method: "POST",
         headers: {
             'Authorization': options.headers.Authorization,
@@ -37,9 +67,8 @@ function addPlaylist(options, trackEnergy, user) {
     };
 
     const addPlaylistUrl = playlistBaseUrl + user.id + "/playlists";
-    console.log(addPlaylistUrl);
 
-    return fetch(addPlaylistUrl, newOptions)
+    return fetch(addPlaylistUrl, addPlaylistOptions)
         .then(response => {
             console.log(response)
             if (response.ok) {
@@ -48,31 +77,30 @@ function addPlaylist(options, trackEnergy, user) {
             }
             throw new Error(response.statusText);
         })
-        .then(responseJson => console.log(responseJson))
+        .then(responseJson => addTracks(options, sortedTracks, user, responseJson))
         .catch(error => {
             alert(`Something went wrong with tracks: ${error.message}`);
         })
-
 }
 
 
 function sortTracks(options, trackFeatures, user) {
     console.log("Sorting tracks...");
 
-    const trackEnergy = [];
+    const sortedTracks = [];
 
     for (let i of trackFeatures.audio_features) {
-        let trackI = [i.id, i.energy]
-        trackEnergy.push(trackI);
+        let trackI = [i.uri, i.energy]
+        sortedTracks.push(trackI);
     }
 
-    trackEnergy.sort(function(a, b) {
+    sortedTracks.sort(function(a, b) {
         return a[1] - b[1]
     });
 
-    console.log(trackEnergy);
+    console.log(sortedTracks);
 
-    addPlaylist(options, trackEnergy, user);
+    addPlaylist(options, sortedTracks, user);
 }
 
 
