@@ -5,8 +5,7 @@ const trackBaseUrl = "https://api.spotify.com/v1/playlists/";
 const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 
 
-function addPlaylist(options, trackEnergy, user) {
-    console.log("Adding playlist...");
+function addTracks(options, trackEnergy, user) {
     const ids = [];
 
     for (let i of trackEnergy) {
@@ -16,18 +15,43 @@ function addPlaylist(options, trackEnergy, user) {
     const params = {
         ids: ids,
     }
+}
+
+
+
+function addPlaylist(options, trackEnergy, user) {
+    console.log("Adding playlist...");
+
+    const bodyOptions = {
+        name: "Shuffled",
+        description: "Created by shufflePlus. Increasing energy",
+    };
 
     const newOptions = {
         method: "POST",
         headers: {
-            'Authorization': options.headers["'Authorization"],
+            'Authorization': options.headers.Authorization,
             'Content-Type': 'application/json',
         },
-    }
+        body: JSON.stringify(bodyOptions),
+    };
 
     const addPlaylistUrl = playlistBaseUrl + user.id + "/playlists";
+    console.log(addPlaylistUrl);
 
-    
+    return fetch(addPlaylistUrl, newOptions)
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+                console.log("Playlist created");
+                return response.json();
+            }
+            throw new Error(response.statusText);
+        })
+        .then(responseJson => console.log(responseJson))
+        .catch(error => {
+            alert(`Something went wrong with tracks: ${error.message}`);
+        })
 
 }
 
@@ -73,7 +97,7 @@ function getFeatures(options, tracks, user) {
         .then(response => {
             console.log(response)
             if (response.ok) {
-            return response.json();
+                return response.json();
             }
             throw new Error(response.statusText);
         })
@@ -99,7 +123,7 @@ function handlePlaylistClicks(options, user) {
         .then(response => {
             console.log(response)
             if (response.ok) {
-            return response.json();
+                return response.json();
             }
             throw new Error(response.statusText);
         })
@@ -162,7 +186,7 @@ function getPlaylists(user, options) {
         .then(response => {
             console.log(response)
             if (response.ok) {
-            return response.json();
+                return response.json();
             }
             throw new Error(response.statusText);
         })
@@ -191,7 +215,7 @@ function getUser(token) {
         .then(response => {
             console.log(response)
             if (response.ok) {
-            return response.json();
+                return response.json();
             }
             throw new Error(response.statusText);
         })
@@ -253,7 +277,8 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "http://localhost:8000/",/* "file:///C:/Users/noelc/projects/shufflePlus/index.html", */ 
+        redirect_uri: "http://localhost:8000/",
+        scope: ["playlist-modify-public", "playlist-modify-private"]
     }
 
     const authUrl = authBaseUrl + "?" + formatUrl(authParams);
