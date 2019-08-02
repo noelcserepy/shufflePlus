@@ -305,11 +305,11 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        redirect_uri: "http://localhost:8000/",
         scope: ["playlist-modify-public", "playlist-modify-private"]
     }
 
-    const authUrl = authBaseUrl + "?" + formatUrl(authParams);
+    const authUrl = authBaseUrl + "?" + $.param(authParams);
 
     console.log(authUrl);
     window.open(authUrl, "_self");
