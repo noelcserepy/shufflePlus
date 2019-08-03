@@ -258,7 +258,7 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "http://localhost:8000/",
+        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
         scope: ["playlist-modify-public", "playlist-modify-private"]
     }
 
