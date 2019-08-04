@@ -6,7 +6,7 @@ const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 
 
 // CLICK PLAYLIST
-
+// ==============
 function addTracks(sessionData) {
     const uris = [];
     for (let i of sessionData.sortedTracks) {
@@ -47,7 +47,7 @@ function addPlaylist(sessionData) {
     console.log("Adding playlist...");
 
     const bodyOptions = {
-        name: sessionData.currentPlaylist.name + " < energy",
+        name: sessionData.currentPlaylist.name + " - " + sessionData.currentAlgo,
         description: "Created by shufflePlus. Increasing energy",
     };
 
@@ -71,26 +71,119 @@ function addPlaylist(sessionData) {
 }
 
 
-function sortTracks(sessionData) {
-    console.log("Sorting tracks...");
-    console.log("Track Features: " + sessionData.trackFeatures.audio_features.length);
-    const sortedTracks = [];
+// SORTING ALGOS
+// ==============
+function energyUp(sessionData) {
+    const sortingTracks = [];
 
     for (let i of sessionData.trackFeatures.audio_features) {
         let trackI = [i.uri, i.energy]
-        sortedTracks.push(trackI);
+        sortingTracks.push(trackI);
     }
-
-    sortedTracks.sort(function(a, b) {
+    sortingTracks.sort(function(a, b) {
         return a[1] - b[1]
     });
-    console.log("Sorted tracks: " + sortedTracks.length);
+    
+    return sortingTracks
+}
 
+function energyDown(sessionData) {
+    const sortingTracks = [];
+
+    for (let i of sessionData.trackFeatures.audio_features) {
+        let trackI = [i.uri, i.energy]
+        sortingTracks.push(trackI);
+    }
+    sortingTracks.sort(function(a, b) {
+        return b[1] - a[1]
+    });
+    
+    return sortingTracks
+}
+
+function positivityUp(sessionData) {
+    const sortingTracks = [];
+
+    for (let i of sessionData.trackFeatures.audio_features) {
+        let trackI = [i.uri, i.energy]
+        sortingTracks.push(trackI);
+    }
+    sortingTracks.sort(function(a, b) {
+        return a[1] - b[1]
+    });
+    
+    return sortingTracks
+}
+
+function positivityDown(sessionData) {
+    const sortingTracks = [];
+
+    for (let i of sessionData.trackFeatures.audio_features) {
+        let trackI = [i.uri, i.energy]
+        sortingTracks.push(trackI);
+    }
+    sortingTracks.sort(function(a, b) {
+        return a[1] - b[1]
+    });
+    
+    return sortingTracks
+}
+
+function gigUp(sessionData) {
+    const sortingTracks = [];
+
+    for (let i of sessionData.trackFeatures.audio_features) {
+        let trackI = [i.uri, i.energy]
+        sortingTracks.push(trackI);
+    }
+    sortingTracks.sort(function(a, b) {
+        return a[1] - b[1]
+    });
+    
+    return sortingTracks
+}
+
+function gigDown(sessionData) {
+    const sortingTracks = [];
+
+    for (let i of sessionData.trackFeatures.audio_features) {
+        let trackI = [i.uri, i.energy]
+        sortingTracks.push(trackI);
+    }
+    sortingTracks.sort(function(a, b) {
+        return a[1] - b[1]
+    });
+    
+    return sortingTracks
+}
+
+function sortTracks(sessionData) {
+    console.log("Sorting tracks...");
+    console.log("Track Features: " + sessionData.trackFeatures.audio_features.length);
+    let sortedTracks = []
+
+    if (sessionData.currentAlgo === "energy-up") {
+        sortedTracks = energyUp(sessionData);
+    }else if (sessionData.currentAlgo === "energy-down") {
+        sortedTracks = energyDown(sessionData);
+    }else if (sessionData.currentAlgo === "positivity-up") {
+        sortedTracks = positivityUp(sessionData);
+    }else if (sessionData.currentAlgo === "positivity-down") {
+        sortedTracks = positivityDown(sessionData);
+    }else if (sessionData.currentAlgo === "gig-up") {
+        sortedTracks = gigUp(sessionData);
+    }else if (sessionData.currentAlgo === "gig-down") {
+        sortedTracks = gigDown(sessionData);
+    }
+
+    console.log("Sorted tracks: " + sortedTracks.length);
     sessionData.sortedTracks = sortedTracks;
     addPlaylist(sessionData);
 }
 
 
+// GET TRACKS AND FEATURES
+// =======================
 function getFeatures(sessionData) {
     console.log("Getting track features...");
     const trackIds = [];
@@ -130,20 +223,48 @@ function getTracks(sessionData) {
 }
 
 
-// SHOW PLAYLISTS
-
-function handlePlaylistClicks(sessionData) {
-    console.log("Getting tracklist...");
-    $(".playlist").click(function(event) {
+// HANDLE PLAYLIST CLICKS
+// ======================
+function handleAlgoClicks(sessionData) {
+    console.log("Listening for algo clicks...");
+    $(".playlist .algo-buttons li").click(function(event) {
         event.preventDefault();
-        const clickedPlaylistId = $(this).attr("data-id");
+
+        const clickedPlaylistId = $(this).parents(".playlist").attr("data-id");
         const currentPlaylist = sessionData.playlists.items.find(item => item.id === clickedPlaylistId);
         sessionData.currentPlaylist = currentPlaylist;
+
+        if ($(this).attr("class") === "energy-up") {
+            sessionData.currentAlgo = "energy-up";
+        } else if ($(this).attr("class") === "energy-down") {
+            sessionData.currentAlgo = "energy-down";
+        } else if ($(this).attr("class") === "positivity-up") {
+            sessionData.currentAlgo = "positivity-up";
+        } else if ($(this).attr("class") === "positivity-down") {
+            sessionData.currentAlgo = "positivity-down";
+        } else if ($(this).attr("class") === "gig-up") {
+            sessionData.currentAlgo = "gig-up";
+        } else if ($(this).attr("class") === "gig-down") {
+            sessionData.currentAlgo = "gig-down";
+        } 
+
         getTracks(sessionData);
-    })
+    });
 }
 
 
+function handlePlaylistClicks() {
+    console.log("Listening for playlist clicks...");
+    $(".accordeon-head").click(function(event) {
+        event.preventDefault();
+        $(".playlist .algo-buttons").slideUp("normal");
+        $(this).parent().find(".algo-buttons").slideToggle("normal");
+    });
+}
+
+
+// SHOW PLAYLISTS
+// ==============
 function loadMain(sessionData) {
     console.log("Loading main...")
     console.log("loadMain received playlists: " + JSON.stringify(sessionData.playlists.items.length));
@@ -162,17 +283,31 @@ function loadMain(sessionData) {
         console.log(JSON.stringify(i.name));
         $(".playlist-list").append(`
             <li class="playlist" data-id="${i.id}">
-                <h3>${i.name}</h3>
-            `);
-            if (i.images[0]) {
-                $(`.playlist[data-id=${i.id}]`).append(`
-                    <img class="playlist-image" data-id="${i.id}" src="${i.images[0].url}"></img>`);
-            } else {
-                $(`.playlist[data-id=${i.id}]`).append(`
-                    <img class="playlist-image" data-id="${i.id}" src="media/spotify.png"></img>`);
-            }
+                <div class="accordeon-head">
+                    <a href="#">${i.name}</a>
+                </div>
+                <ul class="algo-buttons">
+                    <li class="energy-up">Increasing energy</li>
+                    <li class="energy-down">Decreasing energy</li>
+                    <li class="positivity-up">Increasing positivity</li>
+                    <li class="positivity-down">Decreasing positivity</li>
+                    <li class="gig-up">Increasing gig</li>
+                    <li class="gig-down">Decreasing gig</li>
+                </ul>
+            </li>`);
+
+        if (i.images[0]) {
+            $(`.playlist[data-id=${i.id}]`).find(".accordeon-head").prepend(`
+                <img class="playlist-image" data-id="${i.id}" src="${i.images[0].url}"></img>`);
+        } else {
+            $(`.playlist[data-id=${i.id}]`).find(".accordeon-head").prepend(`
+                <img class="playlist-image" data-id="${i.id}" src="media/spotify.png"></img>`);
+        }
+
+        $(`.playlist[data-id=${i.id}]`).find(".algo-buttons").hide();
     }
-    handlePlaylistClicks(sessionData);
+    handlePlaylistClicks();
+    handleAlgoClicks(sessionData);
 }
 
 
@@ -232,7 +367,7 @@ function getUser(token) {
 
 
 // AUTH
-
+// ====
 function receiveAuthToken() {
     if (!window.location.hash) {
         return false
@@ -258,7 +393,7 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        redirect_uri: "http://localhost:8000/",
         scope: ["playlist-modify-public", "playlist-modify-private"]
     }
 
