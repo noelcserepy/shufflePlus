@@ -5,8 +5,8 @@ const trackBaseUrl = "https://api.spotify.com/v1/playlists/";
 const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 
 
-// CLICK PLAYLIST
-// ==============
+// ADD PLAYLIST AND TRACKS
+// =======================
 function addTracks(sessionData) {
     const uris = [];
     for (let i of sessionData.sortedTracks) {
@@ -73,13 +73,33 @@ function addPlaylist(sessionData) {
 
 // SORTING ALGOS
 // ==============
-function energyUp(sessionData) {
-    const sortingTracks = [];
 
+//ENERGY
+
+function getRealEnergy(sessionData) {
+    let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
+        const energy = i.energy;
+        const danceability = i.danceability;
+        let tempo = i.tempo;
+        if (tempo < 50) {tempo = 50};
+        if (tempo > 180) {tempo = 180};
+        tempo = (tempo - 50) / 130;
+        let loudness = i.loudness;
+        if (loudness < -60) {loudness = -60};
+        if (loudness > 0) {loudness = 0};
+        loudness = (loudness / 60) + 1;
+
+        const realEnergy = (0.5 * energy) + (0.15 * tempo) + (0.1 * loudness) + (0.25 * danceability);
+
+        let trackI = [i.uri, realEnergy]
         sortingTracks.push(trackI);
     }
+    return sortingTracks
+}
+
+function energyUp(sessionData) {
+    const sortingTracks = getRealEnergy(sessionData);
     sortingTracks.sort(function(a, b) {
         return a[1] - b[1]
     });
@@ -88,12 +108,7 @@ function energyUp(sessionData) {
 }
 
 function energyDown(sessionData) {
-    const sortingTracks = [];
-
-    for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
-        sortingTracks.push(trackI);
-    }
+    const sortingTracks = getRealEnergy(sessionData);
     sortingTracks.sort(function(a, b) {
         return b[1] - a[1]
     });
@@ -101,13 +116,24 @@ function energyDown(sessionData) {
     return sortingTracks
 }
 
-function positivityUp(sessionData) {
-    const sortingTracks = [];
+// POSITIVITY
 
+function getRealPositivity(sessionData) {
+    let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
+        const valence = i.valence;
+        const mode = i.mode;
+
+        const realPositivity = (0.8 * valence) + (0.2 * mode);
+        let trackI = [i.uri, realPositivity]
         sortingTracks.push(trackI);
     }
+
+    return sortingTracks
+}
+
+function positivityUp(sessionData) {
+    const sortingTracks = getRealPositivity(sessionData);
     sortingTracks.sort(function(a, b) {
         return a[1] - b[1]
     });
@@ -116,26 +142,34 @@ function positivityUp(sessionData) {
 }
 
 function positivityDown(sessionData) {
-    const sortingTracks = [];
-
-    for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
-        sortingTracks.push(trackI);
-    }
+    const sortingTracks = getRealPositivity
     sortingTracks.sort(function(a, b) {
-        return a[1] - b[1]
+        return b[1] - a[1]
     });
     
     return sortingTracks
 }
 
-function gigUp(sessionData) {
-    const sortingTracks = [];
+// GIG
 
+function getRealGig(sessionData) {
+    let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
+        const speechiness = i.speechiness;
+        const acousticness = i.acousticness;
+        const liveness = i.liveness;
+        const instrumentalness = i.instrumentalness;
+
+        const realGig = (0.1 * speechiness) + (0.4 * acousticness) + (0.3 * liveness) + (0.2 * instrumentalness);
+        let trackI = [i.uri, realGig]
         sortingTracks.push(trackI);
     }
+
+    return sortingTracks
+}
+
+function gigUp(sessionData) {
+    const sortingTracks = getRealGig(sessionData);    
     sortingTracks.sort(function(a, b) {
         return a[1] - b[1]
     });
@@ -144,18 +178,15 @@ function gigUp(sessionData) {
 }
 
 function gigDown(sessionData) {
-    const sortingTracks = [];
-
-    for (let i of sessionData.trackFeatures.audio_features) {
-        let trackI = [i.uri, i.energy]
-        sortingTracks.push(trackI);
-    }
+    const sortingTracks = getRealGig(sessionData);
     sortingTracks.sort(function(a, b) {
-        return a[1] - b[1]
+        return b[1] - a[1]
     });
     
     return sortingTracks
 }
+
+// ALGO SWITCH
 
 function sortTracks(sessionData) {
     console.log("Sorting tracks...");
@@ -393,7 +424,7 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "http://localhost:8000/",
+        redirect_uri: "https://noelcserepy.github.io/shufflePlus/", // http://localhost:8000/
         scope: ["playlist-modify-public", "playlist-modify-private"]
     }
 
