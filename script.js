@@ -260,7 +260,7 @@ function getTracks(sessionData) {
     console.log(`trackUrl is: ${trackUrl}`);
     fetchJson(trackUrl, sessionData.options)
             .then(responseJson => sessionData.tracks = responseJson)
-            .then(responseJson => daniFunction(sessionData)
+            .then(responseJson => daniFunction(sessionData))
             .then(responseJson => getFeatures(sessionData))
             .catch(error => {
                 alert(`Something went wrong with tracks: ${error.message}`);
