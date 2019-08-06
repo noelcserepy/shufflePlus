@@ -77,7 +77,7 @@ function addPlaylist(sessionData) {
 function getRealEnergy(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue};
+        if (i.energy === null) {continue; }
         const energy = i.energy;
         const danceability = i.danceability;
         let tempo = i.tempo;
@@ -120,7 +120,7 @@ function energyDown(sessionData) {
 function getRealPositivity(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue};
+        if (i.energy === null) {continue; }
         const valence = i.valence;
         const mode = i.mode;
 
@@ -155,7 +155,7 @@ function positivityDown(sessionData) {
 function getRealGig(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue};
+        if (i.energy === null) {continue; }
         const speechiness = i.speechiness;
         const acousticness = i.acousticness;
         const liveness = i.liveness;
@@ -241,6 +241,18 @@ function getFeatures(sessionData) {
 
 }
 
+//-----------------------------------
+function daniFunction(sessionData) {
+    const daniList = [];
+    for (const i of sessionData.tracks.items) {
+        daniList.push(`${i.track.name} - ${i.artist.name}`);
+    }
+    console.log(daniList);
+}
+//------------------------------------
+
+
+
 
 function getTracks(sessionData) {
     console.log("Getting tracks...");
@@ -248,6 +260,7 @@ function getTracks(sessionData) {
     console.log(`trackUrl is: ${trackUrl}`);
     fetchJson(trackUrl, sessionData.options)
             .then(responseJson => sessionData.tracks = responseJson)
+            .then(responseJson => daniFunction(sessionData)
             .then(responseJson => getFeatures(sessionData))
             .catch(error => {
                 alert(`Something went wrong with tracks: ${error.message}`);
