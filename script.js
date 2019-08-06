@@ -46,7 +46,7 @@ function addPlaylist(sessionData) {
 
     const bodyOptions = {
         name: sessionData.currentPlaylist.name + " - " + sessionData.currentAlgo,
-        description: "Created by shufflePlus. Increasing energy",
+        description: `Created by shufflePlus. ${sessionData.currentAlgo}`,
     };
 
     const addPlaylistOptions = {
@@ -423,7 +423,7 @@ function getToken() {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
         redirect_uri: "https://noelcserepy.github.io/shufflePlus/", // http://localhost:8000/
-        scope: ["playlist-modify-public", "playlist-modify-private", "playlist-read-collaborative", "user-library-modify", "user-library-read", "user-follow-read", "user-follow-modify"]
+        scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-modify user-library-read user-follow-read user-follow-modify"
     }
 
     const authUrl = authBaseUrl + "?" + $.param(authParams);
