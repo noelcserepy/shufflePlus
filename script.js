@@ -15,9 +15,7 @@ function addTracks(sessionData) {
 
     console.log("URIs: " + uris.length);
 
-    const bodyOptions = {
-        uris: uris,
-    }
+    const bodyOptions = {uris} //------------------------------------
 
     const addTracksOptions = {
         method: "POST",
@@ -425,7 +423,7 @@ function getToken() {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
         redirect_uri: "https://noelcserepy.github.io/shufflePlus/", // http://localhost:8000/
-        scope: ["playlist-modify-public", "playlist-modify-private"]
+        scope: ["playlist-modify-public", "playlist-modify-private", "playlist-read-collaborative", "user-library-modify", "user-library-read", "user-follow-read", "user-follow-modify"]
     }
 
     const authUrl = authBaseUrl + "?" + $.param(authParams);
