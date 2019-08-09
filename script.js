@@ -89,7 +89,7 @@ function getRealEnergy(sessionData) {
         if (loudness > 0) {loudness = 0};
         loudness = (loudness / 60) + 1;
 
-        const realEnergy = (0.5 * energy) + (0.15 * tempo) + (0.1 * loudness) + (0.25 * danceability);
+        const realEnergy = (0.55 * energy) + (0.15 * tempo) + (0.1 * loudness) + (0.20 * danceability);
 
         let trackI = [i.uri, realEnergy]
         sortingTracks.push(trackI);
@@ -265,6 +265,7 @@ function handleAlgoClicks(sessionData) {
         const clickedPlaylistId = $(this).parents(".playlist").attr("data-id");
         const currentPlaylist = sessionData.playlists.items.find(item => item.id === clickedPlaylistId);
         sessionData.currentPlaylist = currentPlaylist;
+        console.log(currentPlaylist);
 
         if ($(this).attr("class") === "energy-up") {
             sessionData.currentAlgo = "energy-up";
@@ -425,8 +426,9 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "https://noelcserepy.github.io/shufflePlus/", // http://localhost:8000/
-        scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-modify user-library-read user-follow-read user-follow-modify"
+        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        //redirect_uri: "http://localhost:8000/",
+        scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-read"
     }
 
     const authUrl = authBaseUrl + "?" + $.param(authParams);
