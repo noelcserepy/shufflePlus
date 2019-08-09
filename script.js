@@ -15,7 +15,7 @@ function addTracks(sessionData) {
 
     console.log("URIs: " + uris.length);
 
-    const bodyOptions = {uris} //------------------------------------
+    const bodyOptions = {uris} 
 
     const addTracksOptions = {
         method: "POST",
@@ -241,18 +241,6 @@ function getFeatures(sessionData) {
 
 }
 
-//-----------------------------------
-function daniFunction(sessionData) {
-    const daniList = [];
-    for (const i of sessionData.tracks.items) {
-        daniList.push(`${i.track.name} - ${i.artist.name}`);
-    }
-    console.log(daniList);
-}
-//------------------------------------
-
-
-
 
 function getTracks(sessionData) {
     console.log("Getting tracks...");
@@ -260,7 +248,6 @@ function getTracks(sessionData) {
     console.log(`trackUrl is: ${trackUrl}`);
     fetchJson(trackUrl, sessionData.options)
             .then(responseJson => sessionData.tracks = responseJson)
-            .then(responseJson => daniFunction(sessionData))
             .then(responseJson => getFeatures(sessionData))
             .catch(error => {
                 alert(`Something went wrong with tracks: ${error.message}`);
