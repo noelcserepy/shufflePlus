@@ -9,6 +9,7 @@ const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 // =======================
 function addTracks(sessionData) {
     const uris = [];
+    uris.concat(sessionData.localUris);
     for (let i of sessionData.sortedTracks) {
         uris.push(i[0]);
     }
@@ -77,7 +78,7 @@ function addPlaylist(sessionData) {
 function getRealEnergy(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue; }
+        if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const energy = i.energy;
         const danceability = i.danceability;
         let tempo = i.tempo;
@@ -120,7 +121,7 @@ function energyDown(sessionData) {
 function getRealPositivity(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue; }
+        if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const valence = i.valence;
         const mode = i.mode;
 
@@ -155,7 +156,7 @@ function positivityDown(sessionData) {
 function getRealGig(sessionData) {
     let sortingTracks = [];
     for (let i of sessionData.trackFeatures.audio_features) {
-        if (i.energy === null) {continue; }
+        if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const speechiness = i.speechiness;
         const acousticness = i.acousticness;
         const liveness = i.liveness;
@@ -218,11 +219,20 @@ function sortTracks(sessionData) {
 // =======================
 function getFeatures(sessionData) {
     console.log("Getting track features...");
+    console.log("Tracks are: ");
+    console.log(sessionData.tracks);
     const trackIds = [];
+    const localUris = [];
 
     for (let i of sessionData.tracks.items) {
-        trackIds.push(i.track.id);
+        if (i.track.is_local === true) {
+            localUris.push(i.track.uri);
+        }else {
+            trackIds.push(i.track.id);
+        }
     }
+
+    sessionData.localUris = localUris;
 
     const params = {
         ids: trackIds.toString(),
@@ -331,6 +341,12 @@ function loadMain(sessionData) {
                     <li class="gig-down">Decreasing gig</li>
                 </ul>
             </li>`);
+
+        if (typeof sessionData.playlists.items[0] === "undefined") {
+            $(".playlist-list").append(`
+                <p>There seem to be no playlists in your library...</p>
+            `)
+        }
 
         if (i.images[0]) {
             $(`.playlist[data-id=${i.id}]`).find(".accordeon-head").prepend(`
