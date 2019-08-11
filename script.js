@@ -290,7 +290,6 @@ function handlePlaylistClicks() {
     console.log("Listening for playlist clicks...");
     $(".accordeon-head").click(function(event) {
         event.preventDefault();
-        $(".playlist .algo-buttons").slideUp("normal");
         $(this).parent().find(".algo-buttons").slideToggle("normal");
     });
 }
@@ -314,10 +313,14 @@ function loadMain(sessionData) {
     
     for (let i of sessionData.playlists.items) {
         console.log(JSON.stringify(i.name));
+        let displayName = i.name;
+        if (displayName.length > 25) {
+            displayName = displayName.slice(0, 24) + "...";
+        }
         $(".playlist-list").append(`
             <li class="playlist" data-id="${i.id}">
                 <div class="accordeon-head">
-                    <a href="#">${i.name}</a>
+                    <a href="#">${displayName}</a>
                 </div>
                 <ul class="algo-buttons">
                     <li class="energy-up">Increasing energy</li>

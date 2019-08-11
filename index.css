@@ -1,11 +1,14 @@
 * {
     box-sizing: border-box;
+}
+
+body {
+    background: rgb(13, 20, 20);
     font-family: 'Varela Round', sans-serif;
+    color: white;
 }
 
 header {
-    background: darkslategray;
-    color: white;
     text-align: center;
     width: 100%;
     position: fixed;
@@ -47,13 +50,14 @@ header > button {
 }
 
 .playlist:hover {
-    box-shadow: 4px 4px 20px -2px rgba(250, 0, 0, 0.35);
+    box-shadow: 4px 4px 20px -2px mediumseagreen;
     cursor: pointer;
 }
 
 .accordeon-head {
-    background: grey;
+    background: rgb(29, 56, 56);
     height: 50px;
+    border-radius: 5px;
 }
 
 .playlist-image {
@@ -63,8 +67,8 @@ header > button {
 
 .playlist a {
     display: inline-block;
-    color: black;
     text-align: left;
+    color: white;
     margin: 10px;
     text-decoration: none;
     font-size: 1.1em;
@@ -78,11 +82,12 @@ header > button {
 .algo-buttons > li {
     display: block;
     border: 1px solid black;
-    background: lightblue;
+    background: rgb(23, 54, 54);
+    padding: 5px;
 }
 
 .algo-buttons > li:hover {
-    background: lightcyan;
+    background: rgb(39, 116, 116);
     cursor: pointer;
 }
 
