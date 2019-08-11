@@ -10,7 +10,7 @@ const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 function addTracks(sessionData) {
     const uris = [];
     uris.concat(sessionData.localUris);
-    for (let i of sessionData.sortedTracks) {
+    for (const i of sessionData.sortedTracks) {
         uris.push(i[0]);
     }
 
@@ -77,7 +77,7 @@ function addPlaylist(sessionData) {
 
 function getRealEnergy(sessionData) {
     let sortingTracks = [];
-    for (let i of sessionData.trackFeatures.audio_features) {
+    for (const i of sessionData.trackFeatures.audio_features) {
         if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const energy = i.energy;
         const danceability = i.danceability;
@@ -120,7 +120,7 @@ function energyDown(sessionData) {
 
 function getRealPositivity(sessionData) {
     let sortingTracks = [];
-    for (let i of sessionData.trackFeatures.audio_features) {
+    for (const i of sessionData.trackFeatures.audio_features) {
         if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const valence = i.valence;
         const mode = i.mode;
@@ -155,7 +155,7 @@ function positivityDown(sessionData) {
 
 function getRealGig(sessionData) {
     let sortingTracks = [];
-    for (let i of sessionData.trackFeatures.audio_features) {
+    for (const i of sessionData.trackFeatures.audio_features) {
         if (typeof i.energy === "undefined" || i.energy === null || sessionData.trackFeatures === "undefined") {continue; }
         const speechiness = i.speechiness;
         const acousticness = i.acousticness;
@@ -224,7 +224,7 @@ function getFeatures(sessionData) {
     const trackIds = [];
     const localUris = [];
 
-    for (let i of sessionData.tracks.items) {
+    for (const i of sessionData.tracks.items) {
         if (i.track.is_local === true) {
             localUris.push(i.track.uri);
         }else {
@@ -321,11 +321,11 @@ function loadMain(sessionData) {
             </ul>
         </div>`);
     
-    for (let i of sessionData.playlists.items) {
+    for (const i of sessionData.playlists.items) {
         console.log(JSON.stringify(i.name));
         let displayName = i.name;
-        if (displayName.length > 25) {
-            displayName = displayName.slice(0, 24) + "...";
+        if (displayName.length > 15) {
+            displayName = displayName.slice(0, 14) + "...";
         }
         $(".playlist-list").append(`
             <li class="playlist" data-id="${i.id}">
