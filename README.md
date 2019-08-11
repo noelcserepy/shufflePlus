@@ -11,7 +11,7 @@ that ill-matched tracks have when played back-to-back.
 
 ## Prerequisites
 
-You can use ShufflePlus if you have a Spotify account and a playlist you would like to sort. That's it.7
+You can use ShufflePlus if you have a Spotify account and a playlist you would like to sort. That's it.
 
 
 ## Technologies Used
