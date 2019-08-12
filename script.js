@@ -16,26 +16,38 @@ function addTracks(sessionData) {
 
     console.log("URIs: " + uris.length);
 
-    const bodyOptions = {uris} 
+    while (uris.length > 0) {
+        let tempUris = [];
 
-    const addTracksOptions = {
-        method: "POST",
-        headers: {
-            'Authorization': 'Bearer ' + sessionData.token,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(bodyOptions),
-    };
+        if (uris.length < 100) {
+            tempUris = uris;
+            uris.length = 0;
+        } else {
+            tempUris = uris.slice(0, 100);
+            uris.splice(0, 100);
+        }
+7
+        const bodyOptions = {uris: tempUris}
 
-    console.log(JSON.stringify(addTracksOptions));
+        const addTracksOptions = {
+            method: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + sessionData.token,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(bodyOptions),
+        };
 
-    const addTracksUrl = trackBaseUrl + sessionData.newPlaylist.id + "/tracks";
+        console.log(JSON.stringify(addTracksOptions));
 
-    fetchJson(addTracksUrl, addTracksOptions)
-        .then(responseJson => console.log("Tracks added"))
-        .catch(error => {
-            alert(`Something went wrong with tracks: ${error.message}`);
-        })
+        const addTracksUrl = trackBaseUrl + sessionData.newPlaylist.id + "/tracks";
+
+        fetchJson(addTracksUrl, addTracksOptions)
+            .then(responseJson => console.log("Tracks added"))
+            .catch(error => {
+                alert(`Something went wrong with tracks: ${error.message}`);
+            })
+    }
 
     getPlaylists(sessionData);
 }
@@ -307,6 +319,20 @@ function handlePlaylistClicks() {
 
 // SHOW PLAYLISTS
 // ==============
+function playlistAdded(id) {
+    $(id).find(".accordeon-head p").show();
+    $(id).find(".accordeon-head p").delay(3000).fadeOut("slow");
+}
+
+function scrollToCurrent(sessionData) {
+    var id = "#" + sessionData.currentPlaylist.id
+    var offset = 60;
+    var target = $(id).offset() - 5;
+    $(id).find(".algo-buttons").slideDown("normal");
+    $("html, body").animate({scrollTop : target.top}, 500);
+    playlistAdded(id);
+}
+
 function loadMain(sessionData) {
     console.log("Loading main...")
     console.log("loadMain received playlists: " + JSON.stringify(sessionData.playlists.items.length));
@@ -328,9 +354,12 @@ function loadMain(sessionData) {
             displayName = displayName.slice(0, 14) + "...";
         }
         $(".playlist-list").append(`
-            <li class="playlist" data-id="${i.id}">
+            <li class="playlist" data-id="${i.id}" id="${i.id}">
                 <div class="accordeon-head">
                     <a href="#">${displayName}</a>
+                    <div class="pll-added-container">
+                        <p>Playlist added</p>
+                    </div>
                 </div>
                 <ul class="algo-buttons">
                     <li class="energy-up">Increasing energy</li>
@@ -358,29 +387,50 @@ function loadMain(sessionData) {
 
         $(`.playlist[data-id=${i.id}]`).find(".algo-buttons").hide();
     }
+
+    if ("currentPlaylist" in sessionData) {
+        scrollToCurrent(sessionData);
+    }
+
     handlePlaylistClicks();
     handleAlgoClicks(sessionData);
 }
 
 
-function getPlaylists(sessionData) {
+async function getPlaylists(sessionData) {
     console.log("getPlaylists started " + typeof sessionData);
     console.log(sessionData);
     console.log("User ID: " + sessionData.user.id);
 
-    const params = {
-        limit: 50,
-    }
-    
-    const playlistUrl = playlistBaseUrl + sessionData.user.id + "/playlists" + "?" + $.param(params);
-    console.log(`playlistUrl is : ${playlistUrl}`);
+    let keepFetching = true;
+    let offset = 0;
 
-    fetchJson(playlistUrl, sessionData.options)
-        .then(responseJson => sessionData.playlists = responseJson)
-        .then(responseJson => loadMain(sessionData))
-        .catch(error => {
-            alert(`Something went wrong with playlists: ${error.message}`);
-        })
+    while (keepFetching === true) {
+        const params = {
+            limit: 50,
+            offset,
+        }
+
+        const playlistUrl = playlistBaseUrl + sessionData.user.id + "/playlists" + "?" + $.param(params);
+        console.log(`playlistUrl is : ${playlistUrl}`);
+    
+        await fetchJson(playlistUrl, sessionData.options)
+            .then(responseJson => sessionData.playlists = {
+                ...responseJson,
+                ...sessionData.playlists,
+                })
+            .then(responseJson => {
+                if (responseJson) {
+                    keepFetching = false;
+                    loadMain(sessionData);
+                }else {
+                    offset =+ 50;
+                }
+            })
+            .catch(error => {
+                alert(`Something went wrong with playlists: ${error.message}`);
+            })
+    }
 }
 
 
@@ -413,7 +463,9 @@ function getUser(token) {
         .then(responseJson => sessionData.user = responseJson)
         .then(responseJson => getPlaylists(sessionData))
         .catch(error => {
-            alert(`Something went wrong with user: ${error.message}`);
+            console.log(`Something went wrong with user: ${error.message}`);
+            //alert(`Something went wrong with user: ${error.message}`);
+            //getToken();
         })
 }
 
@@ -435,7 +487,6 @@ function handleAuth() {
     if (!token) {
         console.log("ask for token");
     } else {
-        console.log("show rest of app");
         getUser(token);
     }
 }
@@ -451,8 +502,6 @@ function getToken() {
     }
 
     const authUrl = authBaseUrl + "?" + $.param(authParams);
-
-    console.log(authUrl);
     window.open(authUrl, "_self");
 }
 

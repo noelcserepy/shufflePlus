@@ -31,6 +31,10 @@ header > button {
     display: block;
 }
 
+main h2 {
+    text-align: center;
+}
+
 .hidden {
     display: none;
 }
@@ -72,6 +76,16 @@ header > button {
     margin: 10px;
     text-decoration: none;
     font-size: 1.1em;
+}
+
+.pll-added-container {
+    float: right;
+    width: 150px;
+    text-align: center;
+}
+
+.accordeon-head p {
+    display: none;
 }
 
 .algo-buttons {
