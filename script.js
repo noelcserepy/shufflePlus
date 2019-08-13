@@ -398,38 +398,42 @@ function loadMain(sessionData) {
 
 
 async function getPlaylists(sessionData) {
-    console.log("getPlaylists started " + typeof sessionData);
+    console.log("Getting playlists...");
     console.log(sessionData);
-    console.log("User ID: " + sessionData.user.id);
 
+    const params = {
+        limit: 50,
+    }
+
+    let playlistUrl = playlistBaseUrl + sessionData.user.id + "/playlists" + "?" + $.param(params);
     let keepFetching = true;
-    let offset = 0;
 
     while (keepFetching === true) {
-        const params = {
-            limit: 50,
-            offset,
-        }
-
-        const playlistUrl = playlistBaseUrl + sessionData.user.id + "/playlists" + "?" + $.param(params);
-        console.log(`playlistUrl is : ${playlistUrl}`);
-    
-        await fetchJson(playlistUrl, sessionData.options)
-            .then(responseJson => sessionData.playlists = {
-                ...responseJson,
-                ...sessionData.playlists,
-                })
-            .then(responseJson => {
-                if (responseJson) {
-                    keepFetching = false;
-                    loadMain(sessionData);
-                }else {
-                    offset =+ 50;
+        try {
+            let responseJson = await fetchJson(playlistUrl, sessionData.options)
+            if (sessionData.playlists === undefined) {
+                sessionData.playlists = responseJson;
+            }else {
+                sessionData.playlists = {
+                    next: responseJson.next,
+                    items: [...sessionData.playlists.items, ...responseJson.items],
                 }
-            })
-            .catch(error => {
-                alert(`Something went wrong with playlists: ${error.message}`);
-            })
+            }
+
+            console.log(responseJson.next);
+
+            if (responseJson.next === null) {
+                keepFetching = false;
+                console.log("done fetching")
+                loadMain(sessionData);
+                break;
+            } else {
+                playlistUrl = responseJson.next;
+                continue;
+            }
+        }catch (error) {
+            alert(`Something went wrong with playlists: ${error.message}`);
+        }
     }
 }
 
@@ -496,8 +500,8 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        //redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
-        redirect_uri: "http://localhost:8000/",
+        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        //redirect_uri: "http://localhost:8000/",
         scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-read"
     }
 
