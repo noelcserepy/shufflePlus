@@ -7,46 +7,40 @@ const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 
 // ADD PLAYLIST AND TRACKS
 // =======================
-function addTracks(sessionData) {
+async function addTracks(sessionData) {
+    console.log("Adding tracks to playlist...");
     const uris = [];
-    uris.concat(sessionData.localUris);
+    //uris.concat(sessionData.localUris);
     for (const i of sessionData.sortedTracks) {
         uris.push(i[0]);
     }
 
+    const addTracksUrl = trackBaseUrl + sessionData.newPlaylist.id + "/tracks";
+
     console.log("URIs: " + uris.length);
 
-    while (uris.length > 0) {
-        let tempUris = [];
+    let trackCollection = undefined;
+    try {
+        const trackPromises = [];
+        for (let i = 0; i < uris.length; i += 100) {
+            const bodyOptions = {uris: uris.slice(i, i + 100)}
 
-        if (uris.length < 100) {
-            tempUris = uris;
-            uris.length = 0;
-        } else {
-            tempUris = uris.slice(0, 100);
-            uris.splice(0, 100);
+            const addTracksOptions = {
+                method: "POST",
+                headers: {
+                    'Authorization': 'Bearer ' + sessionData.token,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bodyOptions),
+            }
+
+            trackPromises.push(fetchJson(addTracksUrl, addTracksOptions));
         }
-7
-        const bodyOptions = {uris: tempUris}
 
-        const addTracksOptions = {
-            method: "POST",
-            headers: {
-                'Authorization': 'Bearer ' + sessionData.token,
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(bodyOptions),
-        };
-
-        console.log(JSON.stringify(addTracksOptions));
-
-        const addTracksUrl = trackBaseUrl + sessionData.newPlaylist.id + "/tracks";
-
-        fetchJson(addTracksUrl, addTracksOptions)
-            .then(responseJson => console.log("Tracks added"))
-            .catch(error => {
-                alert(`Something went wrong with tracks: ${error.message}`);
-            })
+        trackCollection = await Promise.all(trackPromises)
+        console.log(trackCollection)
+    }catch (error) {
+        console.log(`Something went wrong with adding tracks to playlist: ${error.message}`);
     }
 
     getPlaylists(sessionData);
@@ -77,7 +71,7 @@ function addPlaylist(sessionData) {
         .then(responseJson => sessionData.newPlaylist = responseJson)
         .then(responseJson => addTracks(sessionData))
         .catch(error => {
-            alert(`Something went wrong with tracks: ${error.message}`);
+            alert(`Something went wrong with adding playlist: ${error.message}`);
         })
 }
 
@@ -229,10 +223,8 @@ function sortTracks(sessionData) {
 
 // GET TRACKS AND FEATURES
 // =======================
-function getFeatures(sessionData) {
+async function getFeatures(sessionData) {
     console.log("Getting track features...");
-    console.log("Tracks are: ");
-    console.log(sessionData.tracks);
     const trackIds = [];
     const localUris = [];
 
@@ -246,34 +238,47 @@ function getFeatures(sessionData) {
 
     sessionData.localUris = localUris;
 
-    const params = {
-        ids: trackIds.toString(),
+    let featureCollection = undefined;
+    try {
+        const trackPromises = [];
+        for (let i = 0; i < trackIds.length; i += 100) {
+            const params = {
+                ids: trackIds.slice(i, i + 100).toString(),
+            }
+
+            const featuresUrl = featuresBaseUrl + "?" + $.param(params);
+
+            trackPromises.push(fetchJson(featuresUrl, sessionData.options))
+        }
+
+        featureCollection = await Promise.all(trackPromises)
+    }catch (error) {
+        console.log(`Something went wrong with features: ${error.message}`);
     }
 
-    const featuresUrl = featuresBaseUrl + "?" + $.param(params);
+    if (sessionData.trackFeatures !== undefined) {
+        sessionData.trackFeatures.length = 0;
+    }
 
-    console.log("trackIds are: " + trackIds.length);
+    for (const i of featureCollection) {
+        if (sessionData.trackFeatures === undefined) {
+            sessionData.trackFeatures = i;
+        }else {
+            sessionData.trackFeatures = {
+                audio_features: [...sessionData.trackFeatures.audio_features, ...i.audio_features],
+            }
+        }
+    }
 
-    fetchJson(featuresUrl, sessionData.options)
-        .then(responseJson => sessionData.trackFeatures = responseJson)
-        .then(responseJson => sortTracks(sessionData))
-        .catch(error => {
-            alert(`Something went wrong with tracks: ${error.message}`);
-        })
-
+    sortTracks(sessionData);
 }
 
 
-function getTracks(sessionData) {
+async function getTracks(sessionData) {
     console.log("Getting tracks...");
-    const trackUrl = trackBaseUrl + sessionData.currentPlaylist.id + "/tracks";
-    console.log(`trackUrl is: ${trackUrl}`);
-    fetchJson(trackUrl, sessionData.options)
-            .then(responseJson => sessionData.tracks = responseJson)
-            .then(responseJson => getFeatures(sessionData))
-            .catch(error => {
-                alert(`Something went wrong with tracks: ${error.message}`);
-            })
+    let trackUrl = trackBaseUrl + sessionData.currentPlaylist.id + "/tracks";
+    sessionData = await getStuff(sessionData, "tracks", trackUrl);
+    getFeatures(sessionData);
 }
 
 
@@ -287,7 +292,6 @@ function handleAlgoClicks(sessionData) {
         const clickedPlaylistId = $(this).parents(".playlist").attr("data-id");
         const currentPlaylist = sessionData.playlists.items.find(item => item.id === clickedPlaylistId);
         sessionData.currentPlaylist = currentPlaylist;
-        console.log(currentPlaylist);
 
         if ($(this).attr("class") === "energy-up") {
             sessionData.currentAlgo = "energy-up";
@@ -335,7 +339,6 @@ function scrollToCurrent(sessionData) {
 
 function loadMain(sessionData) {
     console.log("Loading main...")
-    console.log("loadMain received playlists: " + JSON.stringify(sessionData.playlists.items.length));
 
     $("header").addClass("hidden");
     
@@ -348,7 +351,6 @@ function loadMain(sessionData) {
         </div>`);
     
     for (const i of sessionData.playlists.items) {
-        console.log(JSON.stringify(i.name));
         let displayName = i.name;
         if (displayName.length > 15) {
             displayName = displayName.slice(0, 14) + "...";
@@ -397,44 +399,52 @@ function loadMain(sessionData) {
 }
 
 
+async function getStuff(sessionData, child, apiUrl) {
+    let keepFetching = true;
+    let apiUrlHere = apiUrl;
+
+    if (sessionData[child] !== undefined) {
+        sessionData[child].length = 0;
+    }
+
+    while (keepFetching === true) {
+        try {
+            let responseJson = await fetchJson(apiUrlHere, sessionData.options)
+            if (sessionData[child] === undefined) {
+                sessionData[child] = responseJson;
+            }else {
+                sessionData[child] = {
+                    next: responseJson.next,
+                    items: [...sessionData[child].items, ...responseJson.items],
+                }
+            }
+
+            if (responseJson.next === null) {
+                keepFetching = false;
+                console.log(`done fetching ${child}`);
+                return sessionData;
+            } else {
+                apiUrlHere = responseJson.next;
+                continue;
+            }
+        }catch (error) {
+            alert(`Something went wrong with ${child}: ${error.message}`);
+        }
+    }
+}
+
+
 async function getPlaylists(sessionData) {
     console.log("Getting playlists...");
-    console.log(sessionData);
-
     const params = {
         limit: 50,
     }
 
     let playlistUrl = playlistBaseUrl + sessionData.user.id + "/playlists" + "?" + $.param(params);
-    let keepFetching = true;
 
-    while (keepFetching === true) {
-        try {
-            let responseJson = await fetchJson(playlistUrl, sessionData.options)
-            if (sessionData.playlists === undefined) {
-                sessionData.playlists = responseJson;
-            }else {
-                sessionData.playlists = {
-                    next: responseJson.next,
-                    items: [...sessionData.playlists.items, ...responseJson.items],
-                }
-            }
+    sessionData = await getStuff(sessionData, "playlists", playlistUrl);
 
-            console.log(responseJson.next);
-
-            if (responseJson.next === null) {
-                keepFetching = false;
-                console.log("done fetching")
-                loadMain(sessionData);
-                break;
-            } else {
-                playlistUrl = responseJson.next;
-                continue;
-            }
-        }catch (error) {
-            alert(`Something went wrong with playlists: ${error.message}`);
-        }
-    }
+    loadMain(sessionData);
 }
 
 
@@ -467,9 +477,12 @@ function getUser(token) {
         .then(responseJson => sessionData.user = responseJson)
         .then(responseJson => getPlaylists(sessionData))
         .catch(error => {
-            console.log(`Something went wrong with user: ${error.message}`);
-            //alert(`Something went wrong with user: ${error.message}`);
-            //getToken();
+            try {
+                getToken();
+            }catch {
+                console.log(`Something went wrong with user: ${error.message}`);
+                alert("Refresh the page to log in again");
+            }
         })
 }
 
@@ -487,9 +500,12 @@ function receiveAuthToken() {
 
 function handleAuth() {
     let token = receiveAuthToken();
-    console.log(`Token: ${token}`);
     if (!token) {
-        console.log("ask for token");
+        try {
+            receiveAuthToken();
+        }catch (error){
+            console.log(`Something went wrong with token: ${error.message}`);
+        }
     } else {
         getUser(token);
     }
