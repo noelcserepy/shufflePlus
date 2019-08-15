@@ -168,7 +168,7 @@ function getRealGig(sessionData) {
         const liveness = i.liveness;
         const instrumentalness = i.instrumentalness;
 
-        const realGig = (0.1 * speechiness) + (0.4 * acousticness) + (0.3 * liveness) + (0.2 * instrumentalness);
+        const realGig = (0.1 * speechiness) + (0.3 * acousticness) + (0.5 * liveness) + (0.1 * instrumentalness);
         let trackI = [i.uri, realGig]
         sortingTracks.push(trackI);
     }
@@ -344,6 +344,30 @@ function loadMain(sessionData) {
     
     $("main").empty();
     $("main").append(`
+        <h2>Sort by:</h2>
+        <div class="desciption-holder">
+            <div class="energy algo-description">
+                <div class="algo-image">
+                    <object data="media/plug.svg" type="image/svg+xml"></object>
+                </div>
+                <h2>Energy</h2>
+                <p>How energetic the song is. Noisy, fast and loud tracks tend to have a high energy rating.</p>
+            </div>
+            <div class="positivity algo-description">
+                <div class="algo-image">
+                    <object data="media/happy.svg" type="image/svg+xml"></object>
+                </div>
+                <h2>Positivity</h2>
+                <p>A measure of how happy the song sounds. Takes into account the valence and key of the track.</p>
+            </div>
+            <div class="gig algo-description">
+                <div class="algo-image">
+                    <object data="media/band.svg" type="image/svg+xml"></object>
+                </div>
+                <h2>Gig</h2>
+                <p>Gig measures how "live" and acoustic the song is. The less gig, the more produced is the track.</p>
+            </div>
+        </div>
         <div class="playlist-holder">
             <h2>Choose one of your playlists to sort:</h2>
             <ul class="playlist-list">
@@ -351,14 +375,10 @@ function loadMain(sessionData) {
         </div>`);
     
     for (const i of sessionData.playlists.items) {
-        let displayName = i.name;
-        if (displayName.length > 15) {
-            displayName = displayName.slice(0, 14) + "...";
-        }
         $(".playlist-list").append(`
             <li class="playlist" data-id="${i.id}" id="${i.id}">
                 <div class="accordeon-head">
-                    <a href="#">${displayName}</a>
+                    <a href="#">${i.name}</a>
                     <div class="pll-added-container">
                         <p>Playlist added</p>
                     </div>
@@ -373,13 +393,14 @@ function loadMain(sessionData) {
                 </ul>
             </li>`);
 
-        if (typeof sessionData.playlists.items[0] === "undefined") {
+        if (typeof sessionData.playlists.items[0] === undefined) {
             $(".playlist-list").append(`
                 <p>There seem to be no playlists in your library...</p>
             `)
         }
 
         if (i.images[0]) {
+            console.log("loading images");
             $(`.playlist[data-id=${i.id}]`).find(".accordeon-head").prepend(`
                 <img class="playlist-image" data-id="${i.id}" src="${i.images[0].url}"></img>`);
         } else {
@@ -403,14 +424,14 @@ async function getStuff(sessionData, child, apiUrl) {
     let keepFetching = true;
     let apiUrlHere = apiUrl;
 
-    if (sessionData[child] !== undefined) {
-        sessionData[child].length = 0;
+    if (typeof sessionData[child] !== "undefined") {
+        delete sessionData[child];
     }
 
     while (keepFetching === true) {
         try {
             let responseJson = await fetchJson(apiUrlHere, sessionData.options)
-            if (sessionData[child] === undefined) {
+            if (typeof sessionData[child] === "undefined") {
                 sessionData[child] = responseJson;
             }else {
                 sessionData[child] = {
@@ -516,8 +537,8 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
-        //redirect_uri: "http://localhost:8000/",
+        //redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        redirect_uri: "http://localhost:8000/",
         scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-read"
     }
 
