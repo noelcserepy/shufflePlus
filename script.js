@@ -149,7 +149,7 @@ function positivityUp(sessionData) {
 }
 
 function positivityDown(sessionData) {
-    const sortingTracks = getRealPositivity;
+    const sortingTracks = getRealPositivity(sessionData);
     sortingTracks.sort(function(a, b) {
         return b[1] - a[1]
     });
@@ -256,12 +256,12 @@ async function getFeatures(sessionData) {
         console.log(`Something went wrong with features: ${error.message}`);
     }
 
-    if (sessionData.trackFeatures !== undefined) {
-        sessionData.trackFeatures.length = 0;
+    if (typeof sessionData.trackFeatures !== "undefined") {
+        delete sessionData.trackFeatures;
     }
 
     for (const i of featureCollection) {
-        if (sessionData.trackFeatures === undefined) {
+        if (typeof sessionData.trackFeatures === "undefined") {
             sessionData.trackFeatures = i;
         }else {
             sessionData.trackFeatures = {

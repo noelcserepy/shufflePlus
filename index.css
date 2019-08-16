@@ -15,11 +15,11 @@ h2 {
 }
 
 body {
-    background: var(--Background);
+    background-image: linear-gradient(#2f3631, var(--Background));
     font-family: 'Varela Round', sans-serif;
     color: white;
     position: relative;
-    /* min-height: 100vh; */
+    min-height: 100vh;
 }
 
 .hidden {
@@ -29,9 +29,11 @@ body {
 /*HEADER*/
 header {
     text-align: center;
-    width: 100%;
+    max-width: 400px;
     position: fixed;
     top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 header > * {
@@ -42,8 +44,11 @@ header > button {
     background: var(--Accent2);
     border: none;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 20px;
     margin: 20px;
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--Background);
 }
 
 header > button:hover {
@@ -196,20 +201,4 @@ footer p {
 footer p a {
     font-size: 0.9em;
     margin-bottom: 5px;
-}
-
-
-/* iPads (portrait and landscape) ----------- */
-@media only screen and (min-width: 768px) {
-
-}
-
-/* Desktops and laptops ----------- */
-@media only screen and (min-width: 1024px) {
-    /* Styles */
-}
-
-/* Large screens ----------- */
-@media only screen and (min-width: 1824px) {
-    /* Styles */
 }
