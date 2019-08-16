@@ -345,7 +345,7 @@ function loadMain(sessionData) {
     $("main").empty();
     $("main").append(`
         <h2>Sort by:</h2>
-        <div class="desciption-holder">
+        <div class="description-holder">
             <div class="energy algo-description">
                 <div class="algo-image">
                     <object data="media/plug.svg" type="image/svg+xml"></object>
@@ -537,8 +537,8 @@ function getToken() {
     const authParams = {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
-        //redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
-        redirect_uri: "http://localhost:8000/",
+        redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
+        //redirect_uri: "http://localhost:8000/",
         scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-read"
     }
 

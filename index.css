@@ -19,7 +19,7 @@ body {
     font-family: 'Varela Round', sans-serif;
     color: white;
     position: relative;
-    min-height: 100vh;
+    /* min-height: 100vh; */
 }
 
 .hidden {
@@ -46,6 +46,10 @@ header > button {
     margin: 20px;
 }
 
+header > button:hover {
+    cursor: pointer;
+}
+
 
 /*MAIN*/
 main {
@@ -62,22 +66,18 @@ main h2 {
 
 /*ALGO DESCIPTION*/
 .description-holder {
-    padding: 0;
-    margin: 0;
-    display: block;
-    width: 100%;
-    text-align: center;
-}
-
-.description-holder h2 {
-    margin: 16px 0px;
+    margin: 0 auto;
+    max-width: 1100px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .algo-description {
-    display: block;
-    width: 60%;
+    width: 200px;
     text-align: center;
-    margin: 0 auto;
+    margin: 0px;
 }
 
 .algo-description > p {
@@ -104,7 +104,7 @@ main h2 {
 
 .playlist {
     display: block;
-    width: 90%;
+    max-width: 400px;
     min-height: 50px;
     margin: 0 auto;
     margin-bottom: 20px;
@@ -200,23 +200,12 @@ footer p a {
 
 
 /* iPads (portrait and landscape) ----------- */
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-    .description-holder {
-        margin: 0 auto;
-        width: 80%;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-    }
-    .algo-description {
-        width: 200px;
-        margin: 0;
-        display: block;
-    }
+@media only screen and (min-width: 768px) {
+
 }
 
 /* Desktops and laptops ----------- */
-@media only screen and (min-width: 1224px) {
+@media only screen and (min-width: 1024px) {
     /* Styles */
 }
 
