@@ -149,7 +149,7 @@ function positivityUp(sessionData) {
 }
 
 function positivityDown(sessionData) {
-    const sortingTracks = getRealPositivity
+    const sortingTracks = getRealPositivity;
     sortingTracks.sort(function(a, b) {
         return b[1] - a[1]
     });
@@ -225,7 +225,7 @@ function sortTracks(sessionData) {
 // =======================
 async function getFeatures(sessionData) {
     console.log("Getting track features...");
-    const trackIds = [];
+    let trackIds = [];
     const localUris = [];
 
     for (const i of sessionData.tracks.items) {

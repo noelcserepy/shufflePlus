@@ -177,7 +177,7 @@ main h2 {
 
 footer {
     position: absolute;
-    height: 50;
+    height: 50px;
     width: 100%;
     text-align: center;
     font-size: 0.8em;
