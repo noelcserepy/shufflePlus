@@ -8,16 +8,12 @@ const featuresBaseUrl = "https://api.spotify.com/v1/audio-features"
 // ADD PLAYLIST AND TRACKS
 // =======================
 async function addTracks(sessionData) {
-    console.log("Adding tracks to playlist...");
     const uris = [];
-    //uris.concat(sessionData.localUris);
     for (const i of sessionData.sortedTracks) {
         uris.push(i[0]);
     }
 
     const addTracksUrl = trackBaseUrl + sessionData.newPlaylist.id + "/tracks";
-
-    console.log("URIs: " + uris.length);
 
     let trackCollection = undefined;
     try {
@@ -38,9 +34,8 @@ async function addTracks(sessionData) {
         }
 
         trackCollection = await Promise.all(trackPromises)
-        console.log(trackCollection)
     }catch (error) {
-        console.log(`Something went wrong with adding tracks to playlist: ${error.message}`);
+        alert(`Something went wrong with adding tracks to playlist: ${error.message}`);
     }
 
     getPlaylists(sessionData);
@@ -49,8 +44,6 @@ async function addTracks(sessionData) {
 
 
 function addPlaylist(sessionData) {
-    console.log("Adding playlist...");
-
     const bodyOptions = {
         name: sessionData.currentPlaylist.name + " - " + sessionData.currentAlgo,
         description: `Created by shufflePlus. ${sessionData.currentAlgo}`,
@@ -197,8 +190,6 @@ function gigDown(sessionData) {
 // ALGO SWITCH
 
 function sortTracks(sessionData) {
-    console.log("Sorting tracks...");
-    console.log("Track Features: " + sessionData.trackFeatures.audio_features.length);
     let sortedTracks = []
 
     if (sessionData.currentAlgo === "energy-up") {
@@ -215,7 +206,6 @@ function sortTracks(sessionData) {
         sortedTracks = gigDown(sessionData);
     }
 
-    console.log("Sorted tracks: " + sortedTracks.length);
     sessionData.sortedTracks = sortedTracks;
     addPlaylist(sessionData);
 }
@@ -224,7 +214,6 @@ function sortTracks(sessionData) {
 // GET TRACKS AND FEATURES
 // =======================
 async function getFeatures(sessionData) {
-    console.log("Getting track features...");
     let trackIds = [];
     const localUris = [];
 
@@ -253,7 +242,7 @@ async function getFeatures(sessionData) {
 
         featureCollection = await Promise.all(trackPromises)
     }catch (error) {
-        console.log(`Something went wrong with features: ${error.message}`);
+        alert(`Something went wrong with features: ${error.message}`);
     }
 
     if (typeof sessionData.trackFeatures !== "undefined") {
@@ -275,7 +264,6 @@ async function getFeatures(sessionData) {
 
 
 async function getTracks(sessionData) {
-    console.log("Getting tracks...");
     let trackUrl = trackBaseUrl + sessionData.currentPlaylist.id + "/tracks";
     sessionData = await getStuff(sessionData, "tracks", trackUrl);
     getFeatures(sessionData);
@@ -285,7 +273,6 @@ async function getTracks(sessionData) {
 // HANDLE PLAYLIST CLICKS
 // ======================
 function handleAlgoClicks(sessionData) {
-    console.log("Listening for algo clicks...");
     $(".playlist .algo-buttons li").click(function(event) {
         event.preventDefault();
 
@@ -313,7 +300,6 @@ function handleAlgoClicks(sessionData) {
 
 
 function handlePlaylistClicks() {
-    console.log("Listening for playlist clicks...");
     $(".accordeon-head").click(function(event) {
         event.preventDefault();
         $(this).parent().find(".algo-buttons").slideToggle("normal");
@@ -338,8 +324,6 @@ function scrollToCurrent(sessionData) {
 }
 
 function loadMain(sessionData) {
-    console.log("Loading main...")
-
     $("header").addClass("hidden");
     
     $("main").empty();
@@ -400,7 +384,6 @@ function loadMain(sessionData) {
         }
 
         if (i.images[0]) {
-            console.log("loading images");
             $(`.playlist[data-id=${i.id}]`).find(".accordeon-head").prepend(`
                 <img class="playlist-image" data-id="${i.id}" src="${i.images[0].url}"></img>`);
         } else {
@@ -442,7 +425,6 @@ async function getStuff(sessionData, child, apiUrl) {
 
             if (responseJson.next === null) {
                 keepFetching = false;
-                console.log(`done fetching ${child}`);
                 return sessionData;
             } else {
                 apiUrlHere = responseJson.next;
@@ -456,7 +438,6 @@ async function getStuff(sessionData, child, apiUrl) {
 
 
 async function getPlaylists(sessionData) {
-    console.log("Getting playlists...");
     const params = {
         limit: 50,
     }
@@ -472,7 +453,6 @@ async function getPlaylists(sessionData) {
 function fetchJson(url, options) {
     return fetch(url, options)
         .then(response => {
-            console.log(response)
             if (response.ok) {
                 return response.json();
             }
@@ -501,7 +481,7 @@ function getUser(token) {
             try {
                 getToken();
             }catch {
-                console.log(`Something went wrong with user: ${error.message}`);
+                alert(`Something went wrong with user: ${error.message}`);
                 alert("Refresh the page to log in again");
             }
         })
@@ -525,7 +505,7 @@ function handleAuth() {
         try {
             receiveAuthToken();
         }catch (error){
-            console.log(`Something went wrong with token: ${error.message}`);
+            alert(`Something went wrong with token: ${error.message}`);
         }
     } else {
         getUser(token);
@@ -538,7 +518,6 @@ function getToken() {
         client_id: "5e45e12ee8954ec591c64d49dbb8adc4",
         response_type: "token",
         redirect_uri: "https://noelcserepy.github.io/shufflePlus/",
-        //redirect_uri: "http://localhost:8000/",
         scope: "playlist-modify-public playlist-modify-private playlist-read-collaborative user-library-read"
     }
 
@@ -556,7 +535,6 @@ function handleClicks() {
 
 
 $(function() {
-    console.log("App ready!");
     handleClicks();
     handleAuth();
 })
