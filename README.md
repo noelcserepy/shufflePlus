@@ -1,6 +1,6 @@
 # ShufflePlus
 [Check it out here!](https://noelcserepy.github.io/shufflePlus/)
-
+![](ShufflePlus_Screenshot.PNG)
 
 ## What is ShufflePlus?
 
