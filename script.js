@@ -478,12 +478,7 @@ function getUser(token) {
         .then(responseJson => sessionData.user = responseJson)
         .then(responseJson => getPlaylists(sessionData))
         .catch(error => {
-            try {
-                getToken();
-            }catch {
-                alert(`Something went wrong with user: ${error.message}`);
-                alert("Refresh the page to log in again");
-            }
+            console.log(error);
         })
 }
 
