@@ -501,13 +501,7 @@ function receiveAuthToken() {
 
 function handleAuth() {
     let token = receiveAuthToken();
-    if (!token) {
-        try {
-            receiveAuthToken();
-        }catch (error){
-            alert(`Something went wrong with token: ${error.message}`);
-        }
-    } else {
+    if (token) {
         getUser(token);
     }
 }
