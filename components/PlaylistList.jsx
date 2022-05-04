@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import useSpotify from "../lib/useSpotify";
 import {
+	Card,
 	Container,
-	Divider,
-	List,
-	Paper,
 	ScrollArea,
 	Title,
 	useMantineTheme,
@@ -28,18 +26,18 @@ export default function PlaylistList() {
 	}, [session]);
 
 	return (
-		<Paper radius="lg" style={{ backgroundColor: theme.colors.dark[7] }}>
-			<Container px="lg" py="md">
-				<Title order={3}>Playlists</Title>
-				<ScrollArea style={{ height: "91vh" }}>
-					{playlists.map(p => (
-						<Playlist key={p.id} data={p} />
-					))}
-				</ScrollArea>
-			</Container>
-		</Paper>
+		<Card
+			px="lg"
+			py="md"
+			style={{
+				height: "100%",
+				backgroundColor: "#ffffff00",
+			}}>
+			<ScrollArea offsetScrollbars style={{ height: "100%", width: "100%" }}>
+				{playlists.map(p => (
+					<Playlist key={p.id} data={p} />
+				))}
+			</ScrollArea>
+		</Card>
 	);
 }
-
-// images[0].url
-// name

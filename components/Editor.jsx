@@ -1,13 +1,11 @@
 import {
-	Container,
-	ScrollArea,
 	Grid,
-	Button,
-	Paper,
 	Box,
-	Center,
-	Divider,
+	AppShell,
 	useMantineTheme,
+	Navbar,
+	Header,
+	Title,
 } from "@mantine/core";
 import PlaylistList from "../components/PlaylistList";
 import React from "react";
@@ -20,30 +18,63 @@ export default function Editor() {
 	const theme = useMantineTheme();
 
 	return (
-		<Paper
+		<AppShell
+			padding="md"
+			navbar={
+				<Navbar width={{ base: 300 }} p="xs">
+					<PlaylistList />
+				</Navbar>
+			}
+			header={
+				<Header
+					height={80}
+					p="xs"
+					style={{
+						display: "flex",
+						flexWrap: "nowrap",
+						justifyContent: "space-between",
+						alignItems: "center",
+						color: theme.colors.dark[1],
+					}}>
+					<Title order={1}>ShufflePlus</Title>
+					<UserBox />
+				</Header>
+			}
 			sx={{
 				overflow: "hidden",
 				height: "100vh",
-			}}
-			style={{
-				backgroundColor: theme.colors.dark[6],
-				borderRadius: 0,
 				margin: 0,
-				padding: 20,
-				border: 0,
+				padding: 0,
 			}}>
-			<UserBox />
-			<Grid
-				style={{
-					padding: 20,
-				}}>
-				<Grid.Col span={3}>
-					<PlaylistList />
-				</Grid.Col>
-				<Grid.Col span={8} offset={1}>
-					<EditWindow />
-				</Grid.Col>
-			</Grid>
-		</Paper>
+			<EditWindow />
+		</AppShell>
 	);
+}
+
+{
+	/* <Box
+				sx={{
+					overflow: "hidden",
+					height: "100vh",
+					margin: 0,
+					padding: 0,
+				}}
+				style={{
+					backgroundColor: theme.colors.dark[6],
+					borderRadius: 0,
+				}}>
+				<Grid
+					style={{
+						height: "100%",
+					}}>
+					<Grid.Col
+						span={3}
+						style={{ height: "100%", backgroundColor: theme.colors.dark[9] }}>
+						<PlaylistList />
+					</Grid.Col>
+					<Grid.Col span={9} style={{ height: "100%" }}>
+						
+					</Grid.Col>
+				</Grid>
+			</Box> */
 }

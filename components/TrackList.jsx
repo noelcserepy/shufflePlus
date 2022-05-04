@@ -39,29 +39,27 @@ function TrackList() {
 	if (!currentPlaylist) return <Box />;
 
 	return (
-		<Paper>
-			<Container>
-				<Title order={3}>Playlist: {currentPlaylist.name}</Title>
-				<Space h="xl" />
-				{loading ? (
-					<Loader theme={{ loader: "bars" }} />
-				) : (
-					<>
-						<ScrollArea style={{ height: "91vh" }}>
-							{!currentPlaylist ? (
-								<div>no playlist</div>
-							) : (
-								<List>
-									{tracks.map(t => (
-										<Track key={t.id} data={t} />
-									))}
-								</List>
-							)}
-						</ScrollArea>
-					</>
-				)}
-			</Container>
-		</Paper>
+		<>
+			{loading ? (
+				<Loader theme={{ loader: "bars" }} />
+			) : (
+				<>
+					<ScrollArea
+						offsetScrollbars
+						style={{ height: "100%", width: "100%" }}>
+						{!currentPlaylist ? (
+							<div>no playlist</div>
+						) : (
+							<List>
+								{tracks.map(t => (
+									<Track key={t.id} data={t} />
+								))}
+							</List>
+						)}
+					</ScrollArea>
+				</>
+			)}
+		</>
 	);
 }
 

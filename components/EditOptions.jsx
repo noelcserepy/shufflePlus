@@ -37,9 +37,9 @@ function EditOptions() {
 				height: "100%",
 			}}>
 			<Container>
-				<Title order={3}>Edit</Title>
+				<Title order={3}>{currentPlaylist.name}</Title>
 				<Stack>
-					<Image style={{ width: "50%" }} src={currentPlaylist.images[1].url} />
+					<Image style={{ width: "50%" }} src={currentPlaylist.images[0].url} />
 
 					<InputWrapper id="title" label="Title">
 						<Input id="title" value={currentPlaylist.name}></Input>

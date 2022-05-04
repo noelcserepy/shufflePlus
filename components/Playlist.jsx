@@ -24,13 +24,12 @@ export default function Playlist({ data }) {
 	const theme = useMantineTheme();
 
 	const { name, images } = data;
-	const image = images[0].url;
+	const image = images[2].url;
 
 	return (
 		<Group
 			position="apart"
 			style={{
-				backgroundColor: theme.colors.dark[9],
 				borderRadius: "5px",
 				width: "100%",
 				paddingRight: 20,

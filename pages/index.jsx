@@ -1,4 +1,4 @@
-import { Button, Container } from "@mantine/core";
+import { Button } from "@mantine/core";
 import { getProviders, signIn, signOut, useSession } from "next-auth/react";
 import Editor from "../components/Editor";
 
