@@ -9,9 +9,12 @@ import {
 } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Playlist from "./Playlist";
+import useStore from "../lib/store";
 
 export default function PlaylistList() {
-	const [playlists, setPlaylists] = useState([]);
+	// const [playlists, setPlaylists] = useState([]);
+	const playlists = useStore(state => state.playlists);
+	const setPlaylists = useStore(state => state.setPlaylists);
 	const theme = useMantineTheme();
 	const { data: session, status } = useSession();
 	const s = useSpotify();
@@ -19,7 +22,7 @@ export default function PlaylistList() {
 	useEffect(() => {
 		const fetchPlaylists = async () => {
 			const result = await s.getUserPlaylists(session.user.id);
-			setPlaylists(result.items);
+			setPlaylists([...result.items]);
 		};
 
 		fetchPlaylists();

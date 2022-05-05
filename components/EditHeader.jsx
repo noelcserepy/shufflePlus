@@ -23,7 +23,6 @@ import useStore from "../lib/store";
 function EditHeader() {
 	const theme = useMantineTheme();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
-	console.log(currentPlaylist);
 
 	if (!currentPlaylist)
 		return (
@@ -65,7 +64,7 @@ function EditHeader() {
 					<Badge size="md" variant="filled">
 						{currentPlaylist.public ? "Public" : "Private"}
 					</Badge>
-					<Title order={1} lineClamp style={{ fontSize: "6em" }}>
+					<Title order={1} style={{ fontSize: "5vw", lineClamp: "2" }}>
 						{currentPlaylist.name}
 					</Title>
 					<Text size="md">{currentPlaylist.description}</Text>

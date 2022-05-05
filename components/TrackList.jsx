@@ -23,6 +23,7 @@ function TrackList() {
 	const { data: session, status } = useSession();
 	const s = useSpotify();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 
 	useEffect(() => {
 		if (currentPlaylist) {
@@ -32,6 +33,8 @@ function TrackList() {
 				setTracks(result.items);
 			};
 			fetchPlaylistTracks();
+			currentPlaylist.tracks.items = [...tracks];
+
 			setLoading(false);
 		}
 	}, [session, currentPlaylist]);
@@ -51,8 +54,8 @@ function TrackList() {
 							<div>no playlist</div>
 						) : (
 							<List>
-								{tracks.map(t => (
-									<Track key={t.id} data={t} />
+								{tracks.map((t, i) => (
+									<Track key={`${t.id}--${i}`} data={t} index={i} />
 								))}
 							</List>
 						)}

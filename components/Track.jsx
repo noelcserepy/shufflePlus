@@ -22,7 +22,7 @@ import {
 	Heart,
 } from "tabler-icons-react";
 
-function Track({ data }) {
+function Track({ data, index }) {
 	let name = data.track.name;
 	const image = data.track.album.images[2].url;
 	const artists = data.track.artists.map(artist => artist.name);
@@ -32,7 +32,6 @@ function Track({ data }) {
 
 	return (
 		<Group
-			onClick={console.log(data)}
 			position="apart"
 			ref={ref}
 			style={{
@@ -51,6 +50,8 @@ function Track({ data }) {
 					justifyContent: "flex-start",
 					height: "20px",
 				}}>
+				<Text>{index}</Text>
+				<Space w="md" />
 				<Image src={image} radius="sm" height={30} />
 				<Space w="md" />
 				<Box style={{ maxWidth: "80%" }}>
