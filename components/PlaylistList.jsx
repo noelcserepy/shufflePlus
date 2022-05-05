@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import useSpotify from "../lib/useSpotify";
-import {
-	Card,
-	Container,
-	ScrollArea,
-	Title,
-	useMantineTheme,
-} from "@mantine/core";
+import { Box, useMantineTheme } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Playlist from "./Playlist";
 import useStore from "../lib/store";
 
 export default function PlaylistList() {
-	// const [playlists, setPlaylists] = useState([]);
 	const playlists = useStore(state => state.playlists);
 	const setPlaylists = useStore(state => state.setPlaylists);
 	const theme = useMantineTheme();
@@ -29,19 +22,10 @@ export default function PlaylistList() {
 	}, [session]);
 
 	return (
-		<Card
-			px="lg"
-			py="md"
-			style={{
-				height: "100%",
-				backgroundColor: "#ffffff00",
-				padding: 5,
-			}}>
-			<ScrollArea offsetScrollbars style={{ height: "100%", width: "100%" }}>
-				{playlists.map(p => (
-					<Playlist key={p.id} data={p} />
-				))}
-			</ScrollArea>
-		</Card>
+		<Box>
+			{playlists.map(p => (
+				<Playlist key={p.id} data={p} />
+			))}
+		</Box>
 	);
 }

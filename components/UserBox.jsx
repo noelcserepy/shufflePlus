@@ -2,10 +2,8 @@ import {
 	Avatar,
 	Box,
 	Group,
-	UnstyledButton,
 	Text,
 	useMantineTheme,
-	Button,
 	Anchor,
 } from "@mantine/core";
 import { signOut } from "next-auth/react";
@@ -18,17 +16,23 @@ export default function UserBox() {
 
 	return (
 		<Box
-			sx={{
-				padding: theme.spacing.sm,
+			style={{
+				display: "flex",
+				justifyContent: "flex-start",
 			}}>
 			<Group>
 				{image && <Avatar radius="lg" src={image} />}
 				{!image && (
-					<Avatar radius="lg" color="cyan">
-						NC
+					<Avatar radius="sm" color="cyan">
+						You
 					</Avatar>
 				)}
-				<Box>
+				<Box
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						justifyContent: "center",
+					}}>
 					<Text size="sm">{session.user.name}</Text>
 					<Anchor size="xs" onClick={signOut}>
 						Sign Out

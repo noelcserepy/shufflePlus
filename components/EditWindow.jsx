@@ -5,6 +5,7 @@ import {
 	Divider,
 	Grid,
 	Paper,
+	ScrollArea,
 	Skeleton,
 	Title,
 	useMantineTheme,
@@ -22,8 +23,7 @@ function EditWindow() {
 		return <></>;
 	}
 	return (
-		<Box
-			size="lg"
+		<ScrollArea
 			p={0}
 			style={{
 				width: "100%",
@@ -31,7 +31,7 @@ function EditWindow() {
 			<EditHeader />
 			<EditOptions />
 			<TrackList />
-		</Box>
+		</ScrollArea>
 	);
 }
 

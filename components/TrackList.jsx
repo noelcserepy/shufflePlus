@@ -47,19 +47,15 @@ function TrackList() {
 				<Loader theme={{ loader: "bars" }} />
 			) : (
 				<>
-					<ScrollArea
-						offsetScrollbars
-						style={{ height: "100%", width: "100%" }}>
-						{!currentPlaylist ? (
-							<div>no playlist</div>
-						) : (
-							<List>
-								{tracks.map((t, i) => (
-									<Track key={`${t.id}--${i}`} data={t} index={i} />
-								))}
-							</List>
-						)}
-					</ScrollArea>
+					{!currentPlaylist ? (
+						<div>no playlist</div>
+					) : (
+						<List>
+							{tracks.map((t, i) => (
+								<Track key={`${t.id}--${i}`} data={t} index={i} />
+							))}
+						</List>
+					)}
 				</>
 			)}
 		</>
