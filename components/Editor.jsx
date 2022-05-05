@@ -6,6 +6,7 @@ import {
 	Navbar,
 	Header,
 	Title,
+	Container,
 } from "@mantine/core";
 import PlaylistList from "../components/PlaylistList";
 import React from "react";
@@ -19,62 +20,21 @@ export default function Editor() {
 
 	return (
 		<AppShell
-			padding="md"
+			margin={0}
+			padding={0}
 			navbar={
-				<Navbar width={{ base: 300 }} p="xs">
-					<PlaylistList />
-				</Navbar>
-			}
-			header={
-				<Header
-					height={80}
-					p="xs"
-					style={{
-						display: "flex",
-						flexWrap: "nowrap",
-						justifyContent: "space-between",
-						alignItems: "center",
-						color: theme.colors.dark[1],
-					}}>
+				<Navbar width={{ base: 300 }} p="xs" style={{ color: "white" }}>
 					<Title order={1}>ShufflePlus</Title>
 					<UserBox />
-				</Header>
+					<PlaylistList />
+				</Navbar>
 			}
 			sx={{
 				overflow: "hidden",
 				height: "100vh",
-				margin: 0,
-				padding: 0,
+				background: theme.colors.dark[5],
 			}}>
 			<EditWindow />
 		</AppShell>
 	);
-}
-
-{
-	/* <Box
-				sx={{
-					overflow: "hidden",
-					height: "100vh",
-					margin: 0,
-					padding: 0,
-				}}
-				style={{
-					backgroundColor: theme.colors.dark[6],
-					borderRadius: 0,
-				}}>
-				<Grid
-					style={{
-						height: "100%",
-					}}>
-					<Grid.Col
-						span={3}
-						style={{ height: "100%", backgroundColor: theme.colors.dark[9] }}>
-						<PlaylistList />
-					</Grid.Col>
-					<Grid.Col span={9} style={{ height: "100%" }}>
-						
-					</Grid.Col>
-				</Grid>
-			</Box> */
 }

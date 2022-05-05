@@ -1,4 +1,5 @@
 import {
+	Box,
 	Card,
 	Container,
 	Divider,
@@ -9,6 +10,7 @@ import {
 	useMantineTheme,
 } from "@mantine/core";
 import useStore from "../lib/store";
+import EditHeader from "./EditHeader";
 import EditOptions from "./EditOptions";
 import TrackList from "./TrackList";
 
@@ -52,17 +54,15 @@ function EditWindow() {
 		);
 	}
 	return (
-		<Card
-			px="lg"
-			py="md"
+		<Box
+			size="lg"
+			p={0}
 			style={{
-				height: "100%",
-				display: "flex",
-				flexDirection: "row",
+				width: "100%",
 			}}>
+			<EditHeader />
 			<TrackList />
-			<EditOptions />
-		</Card>
+		</Box>
 	);
 }
 

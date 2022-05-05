@@ -23,7 +23,7 @@ import {
 } from "tabler-icons-react";
 
 function Track({ data }) {
-	const name = data.track.name;
+	let name = data.track.name;
 	const image = data.track.album.images[2].url;
 	const artists = data.track.artists.map(artist => artist.name);
 	const artistString = artists.join(", ");
@@ -32,6 +32,7 @@ function Track({ data }) {
 
 	return (
 		<Group
+			onClick={console.log(data)}
 			position="apart"
 			ref={ref}
 			style={{
@@ -53,10 +54,13 @@ function Track({ data }) {
 				<Image src={image} radius="sm" height={30} />
 				<Space w="md" />
 				<Box style={{ maxWidth: "80%" }}>
-					<Text size="sm" lineClamp={1}>
+					<Text size="sm" lineClamp={1} style={{ textOverflow: "ellipsis" }}>
 						{name}
 					</Text>
-					<Text size="xs" lineClamp={1} style={{ color: theme.colors.dark[2] }}>
+					<Text
+						size="xs"
+						lineClamp={1}
+						style={{ color: theme.colors.dark[2], textOverflow: "ellipsis" }}>
 						{artistString}
 					</Text>
 				</Box>

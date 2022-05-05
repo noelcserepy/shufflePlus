@@ -23,19 +23,20 @@ export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const theme = useMantineTheme();
 
-	const { name, images } = data;
+	let { name, images } = data;
 	const image = images[2].url;
 
 	return (
 		<Group
 			position="apart"
 			style={{
-				borderRadius: "5px",
 				width: "100%",
+				height: "35px",
 				paddingRight: 20,
 				paddingBottom: 5,
 				paddingTop: 5,
 				marginBottom: 5,
+				flexWrap: "nowrap",
 			}}>
 			<UnstyledButton
 				onClick={() => {
@@ -45,10 +46,14 @@ export default function Playlist({ data }) {
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "flex-start",
+					flexWrap: "nowrap",
+					height: "100%",
 				}}>
-				<Image src={image} height={30} />
+				<Image src={image} fit="contain" height={30} />
 				<Space w="md" />
-				<Text>{name}</Text>
+				<Text size="sm" lineClamp={1} style={{ overflow: "ellipsis" }}>
+					{name}
+				</Text>
 			</UnstyledButton>
 
 			<Menu position="right" withArrow>

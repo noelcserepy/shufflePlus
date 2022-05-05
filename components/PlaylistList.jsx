@@ -32,6 +32,7 @@ export default function PlaylistList() {
 			style={{
 				height: "100%",
 				backgroundColor: "#ffffff00",
+				padding: 5,
 			}}>
 			<ScrollArea offsetScrollbars style={{ height: "100%", width: "100%" }}>
 				{playlists.map(p => (
