@@ -1,19 +1,9 @@
-import {
-	Box,
-	Container,
-	List,
-	Loader,
-	Paper,
-	ScrollArea,
-	Space,
-	Title,
-	useMantineTheme,
-} from "@mantine/core";
+import { Box, List, Loader, useMantineTheme } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useEffect } from "react";
-import useStore from "../lib/store";
-import useSpotify from "../lib/useSpotify";
+import useStore from "../../lib/store";
+import useSpotify from "../../lib/useSpotify";
 import Track from "./Track";
 
 function TrackList() {
@@ -42,23 +32,17 @@ function TrackList() {
 	if (!currentPlaylist) return <Box />;
 
 	return (
-		<>
+		<Box size="lg" p={30}>
 			{loading ? (
 				<Loader theme={{ loader: "bars" }} />
 			) : (
-				<>
-					{!currentPlaylist ? (
-						<div>no playlist</div>
-					) : (
-						<List>
-							{tracks.map((t, i) => (
-								<Track key={`${t.id}--${i}`} data={t} index={i} />
-							))}
-						</List>
-					)}
-				</>
+				<List>
+					{tracks.map((t, i) => (
+						<Track key={`${t.id}--${i}`} data={t} index={i} />
+					))}
+				</List>
 			)}
-		</>
+		</Box>
 	);
 }
 

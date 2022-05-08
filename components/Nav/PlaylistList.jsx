@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import useSpotify from "../lib/useSpotify";
+import useSpotify from "../../lib/useSpotify";
 import { Box, useMantineTheme } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Playlist from "./Playlist";
-import useStore from "../lib/store";
+import useStore from "../../lib/store";
 
 export default function PlaylistList() {
 	const playlists = useStore(state => state.playlists);

@@ -1,26 +1,51 @@
 import {
 	Box,
 	Button,
-	Container,
 	Group,
-	Image,
-	Input,
 	InputWrapper,
-	Paper,
 	SegmentedControl,
 	Slider,
-	Space,
 	Stack,
 	Switch,
-	TextInput,
-	Title,
 	useMantineTheme,
 } from "@mantine/core";
-import useStore from "../lib/store";
+import { useState } from "react";
+import useStore from "../../lib/store";
+import useSpotify from "../../lib/useSpotify";
 
 function EditOptions() {
+	const [sortType, setSortType] = useState();
+	const [sortDirection, setSortDirection] = useState();
 	const theme = useMantineTheme();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const s = useSpotify();
+
+	const handleSort = () => {
+		const trackIds = currentPlaylist.tracks.items.map(track => track.track.id);
+		let features = [];
+
+		function dynamicSort(property, descending) {
+			descending = descending || false;
+			var sortOrder = 1;
+			if (descending) {
+				sortOrder = -1;
+			}
+			return function (a, b) {
+				var result =
+					a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
+				return result * sortOrder;
+			};
+		}
+
+		const fetchTrackFeatures = async () => {
+			const result = await s.getAudioFeaturesForTracks(trackIds);
+			features = result.audio_features;
+			console.log(features);
+			features.sort(dynamicSort("danceability", true));
+			console.log(features);
+		};
+		fetchTrackFeatures();
+	};
 
 	if (!currentPlaylist)
 		return (
@@ -72,6 +97,8 @@ function EditOptions() {
 			<InputWrapper id="sort" label="Sort" description="sort">
 				<Stack justify="flex-start" spacing="xl">
 					<SegmentedControl
+						value={sortType}
+						onChange={setSortType}
 						data={[
 							{ label: "Energy", value: "energy" },
 							{ label: "Positivity", value: "positivity" },
@@ -79,12 +106,14 @@ function EditOptions() {
 						]}
 					/>
 					<SegmentedControl
+						value={sortDirection}
+						onChange={setSortDirection}
 						data={[
 							{ label: "Increasing", value: "increasing" },
 							{ label: "Decreasing", value: "decreasing" },
 						]}
 					/>
-					<Button>Sort</Button>
+					<Button onClick={() => handleSort()}>Sort</Button>
 				</Stack>
 			</InputWrapper>
 			<Button>Save as new</Button>

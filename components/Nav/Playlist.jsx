@@ -17,7 +17,7 @@ import {
 	Archive,
 	Share,
 } from "tabler-icons-react";
-import useStore from "../lib/store";
+import useStore from "../../lib/store";
 
 export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);

@@ -1,10 +1,11 @@
 import { AppShell, useMantineTheme, Navbar, ScrollArea } from "@mantine/core";
-import PlaylistList from "../components/PlaylistList";
+import PlaylistList from "../components/Nav/PlaylistList";
 import React from "react";
 import { signOut, useSession } from "next-auth/react";
-import EditWindow from "./EditWindow";
-import NavHeader from "./NavHeader";
-import UserBox from "./UserBox";
+import EditWindow from "./Editor/EditWindow";
+import NavHeader from "./Nav/NavHeader";
+import UserBox from "./Nav/UserBox";
+import Player from "./Player/Player";
 
 export default function Editor() {
 	const { data: session, status } = useSession();
@@ -33,6 +34,7 @@ export default function Editor() {
 				background: theme.colors.dark[5],
 			}}>
 			<EditWindow />
+			<Player />
 		</AppShell>
 	);
 }
