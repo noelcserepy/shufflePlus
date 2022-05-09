@@ -41,7 +41,6 @@ export default function Playlist({ data }) {
 			<UnstyledButton
 				onClick={() => {
 					setCurrentPlaylist({ ...data });
-					console.log({ ...data });
 				}}
 				style={{
 					display: "flex",

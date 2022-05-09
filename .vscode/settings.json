@@ -1,0 +1,15 @@
+{
+	"files.associations": {
+		"deque": "c",
+		"initializer_list": "c",
+		"list": "c",
+		"queue": "c",
+		"type_traits": "c",
+		"vector": "c",
+		"xhash": "c",
+		"xstring": "c",
+		"xtree": "c",
+		"xutility": "c",
+		"xlocale": "c"
+	}
+}

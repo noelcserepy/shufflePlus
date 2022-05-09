@@ -11,41 +11,15 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import useStore from "../../lib/store";
-import useSpotify from "../../lib/useSpotify";
+import SortSection from "./SortSection";
 
 function EditOptions() {
 	const [sortType, setSortType] = useState();
-	const [sortDirection, setSortDirection] = useState();
+	const [sortOrder, setSortOrder] = useState();
 	const theme = useMantineTheme();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
-	const s = useSpotify();
 
-	const handleSort = () => {
-		const trackIds = currentPlaylist.tracks.items.map(track => track.track.id);
-		let features = [];
-
-		function dynamicSort(property, descending) {
-			descending = descending || false;
-			var sortOrder = 1;
-			if (descending) {
-				sortOrder = -1;
-			}
-			return function (a, b) {
-				var result =
-					a[property] < b[property] ? -1 : a[property] > b[property] ? 1 : 0;
-				return result * sortOrder;
-			};
-		}
-
-		const fetchTrackFeatures = async () => {
-			const result = await s.getAudioFeaturesForTracks(trackIds);
-			features = result.audio_features;
-			console.log(features);
-			features.sort(dynamicSort("danceability", true));
-			console.log(features);
-		};
-		fetchTrackFeatures();
-	};
+	const handleSort = () => {};
 
 	if (!currentPlaylist)
 		return (
@@ -94,28 +68,7 @@ function EditOptions() {
 				</Stack>
 			</InputWrapper>
 
-			<InputWrapper id="sort" label="Sort" description="sort">
-				<Stack justify="flex-start" spacing="xl">
-					<SegmentedControl
-						value={sortType}
-						onChange={setSortType}
-						data={[
-							{ label: "Energy", value: "energy" },
-							{ label: "Positivity", value: "positivity" },
-							{ label: "Gig", value: "gig" },
-						]}
-					/>
-					<SegmentedControl
-						value={sortDirection}
-						onChange={setSortDirection}
-						data={[
-							{ label: "Increasing", value: "increasing" },
-							{ label: "Decreasing", value: "decreasing" },
-						]}
-					/>
-					<Button onClick={() => handleSort()}>Sort</Button>
-				</Stack>
-			</InputWrapper>
+			<SortSection />
 			<Button>Save as new</Button>
 		</Box>
 	);
