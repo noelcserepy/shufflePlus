@@ -9,14 +9,9 @@ import { useState } from "react";
 import useStore from "../../lib/store";
 import useSpotify from "../../lib/useSpotify";
 
-function dynamicSort(nestProperty, property, descending) {
-	descending = descending || false;
-	var sortOrder = 1;
-	if (descending) {
-		sortOrder = -1;
-	}
+function dynamicSort(nestProperty, property, sortOrder) {
 	return function (a, b) {
-		var result =
+		let result =
 			a[nestProperty][property] < b[nestProperty][property]
 				? -1
 				: a[nestProperty][property] > b[nestProperty][property]
@@ -55,8 +50,8 @@ export default function SortSection() {
 
 	const s = useSpotify();
 
-	const [sortParam, setSortParam] = useState();
-	const [sortOrder, setSortOrder] = useState();
+	const [sortParam, setSortParam] = useState("hype");
+	const [sortOrder, setSortOrder] = useState(1);
 
 	const handleSort = () => {
 		const fetchTrackFeatures = async () => {
@@ -71,13 +66,7 @@ export default function SortSection() {
 				return t;
 			});
 
-			tracksWithFeatures.sort(
-				dynamicSort(
-					"features",
-					sortParam,
-					sortOrder == "increasing" ? false : true
-				)
-			);
+			tracksWithFeatures.sort(dynamicSort("features", sortParam, sortOrder));
 
 			setCurrentTracks(tracksWithFeatures);
 		};
@@ -92,7 +81,7 @@ export default function SortSection() {
 					value={sortParam}
 					onChange={setSortParam}
 					data={[
-						{ label: "Energy", value: "hype" },
+						{ label: "Hype", value: "hype" },
 						{ label: "Positivity", value: "positivity" },
 						{ label: "Gig", value: "gig" },
 					]}
@@ -101,8 +90,8 @@ export default function SortSection() {
 					value={sortOrder}
 					onChange={setSortOrder}
 					data={[
-						{ label: "Increasing", value: "increasing" },
-						{ label: "Decreasing", value: "decreasing" },
+						{ label: "Increasing", value: 1 },
+						{ label: "Decreasing", value: -1 },
 					]}
 				/>
 				<Button onClick={() => handleSort()}>Sort</Button>

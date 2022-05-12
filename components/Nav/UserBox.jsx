@@ -21,7 +21,7 @@ export default function UserBox() {
 				justifyContent: "flex-start",
 			}}>
 			<Group>
-				{image && <Avatar radius="lg" src={image} />}
+				{image && <Avatar radius="xs" src={image} />}
 				{!image && (
 					<Avatar radius="sm" color="cyan">
 						You

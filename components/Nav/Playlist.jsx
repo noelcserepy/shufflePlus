@@ -32,10 +32,9 @@ export default function Playlist({ data }) {
 			style={{
 				width: "100%",
 				height: "35px",
-				paddingRight: 20,
 				paddingBottom: 5,
 				paddingTop: 5,
-				marginBottom: 5,
+				marginBottom: 10,
 				flexWrap: "nowrap",
 			}}>
 			<UnstyledButton
@@ -49,7 +48,7 @@ export default function Playlist({ data }) {
 					flexWrap: "nowrap",
 					height: "100%",
 				}}>
-				<Image src={image} fit="contain" height={30} />
+				<Image radius="xs" src={image} fit="contain" height={30} />
 				<Space w="md" />
 				<Text size="sm" lineClamp={1} style={{ overflow: "ellipsis" }}>
 					{name}

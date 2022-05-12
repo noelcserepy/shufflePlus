@@ -11,10 +11,6 @@ function NavHeader() {
 				justifyContent: "space-between",
 			}}>
 			<Title order={1}>ShufflePlus</Title>
-			<Space h="md" />
-			<ActionIcon>
-				<Plus />
-			</ActionIcon>
 		</Box>
 	);
 }

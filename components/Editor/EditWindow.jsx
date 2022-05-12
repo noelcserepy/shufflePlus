@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import useStore from "../../lib/store";
 import useSpotify from "../../lib/useSpotify";
+import CoverPage from "./CoverPage";
 import EditHeader from "./EditHeader";
 import EditOptions from "./EditOptions";
 import TrackList from "./TrackList";
@@ -26,7 +27,7 @@ function EditWindow() {
 	}, [session, currentPlaylist]);
 
 	if (!currentPlaylist) {
-		return <></>;
+		return <CoverPage />;
 	}
 
 	return (
