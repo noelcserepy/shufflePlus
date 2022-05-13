@@ -1,13 +1,17 @@
 import {
+	Box,
 	Button,
 	InputWrapper,
 	SegmentedControl,
 	Stack,
+	Text,
+	Title,
 	useMantineTheme,
 } from "@mantine/core";
 import { useState } from "react";
 import useStore from "../../lib/store";
 import useSpotify from "../../lib/useSpotify";
+import EditOptionsSection from "./EditOptionsSection";
 
 function dynamicSort(nestProperty, property, sortOrder) {
 	return function (a, b) {
@@ -47,6 +51,7 @@ function createNewFeatures(f) {
 export default function SortSection() {
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
+	const theme = useMantineTheme();
 
 	const s = useSpotify();
 
@@ -75,27 +80,25 @@ export default function SortSection() {
 	};
 
 	return (
-		<InputWrapper id="sort" label="Sort" description="sort">
-			<Stack justify="flex-start" spacing="xl">
-				<SegmentedControl
-					value={sortParam}
-					onChange={setSortParam}
-					data={[
-						{ label: "Hype", value: "hype" },
-						{ label: "Positivity", value: "positivity" },
-						{ label: "Gig", value: "gig" },
-					]}
-				/>
-				<SegmentedControl
-					value={sortOrder}
-					onChange={setSortOrder}
-					data={[
-						{ label: "Increasing", value: 1 },
-						{ label: "Decreasing", value: -1 },
-					]}
-				/>
-				<Button onClick={() => handleSort()}>Sort</Button>
-			</Stack>
-		</InputWrapper>
+		<EditOptionsSection title="Sort" text="Choose your order type">
+			<SegmentedControl
+				value={sortParam}
+				onChange={setSortParam}
+				data={[
+					{ label: "Hype", value: "hype" },
+					{ label: "Positivity", value: "positivity" },
+					{ label: "Gig", value: "gig" },
+				]}
+			/>
+			<SegmentedControl
+				value={sortOrder}
+				onChange={setSortOrder}
+				data={[
+					{ label: "Increasing", value: 1 },
+					{ label: "Decreasing", value: -1 },
+				]}
+			/>
+			<Button onClick={() => handleSort()}>Sort</Button>
+		</EditOptionsSection>
 	);
 }

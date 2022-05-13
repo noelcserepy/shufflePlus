@@ -1,5 +1,4 @@
-import { ActionIcon, Space, Title, Box } from "@mantine/core";
-import { Plus } from "tabler-icons-react";
+import { Title, Box } from "@mantine/core";
 
 function NavHeader() {
 	return (
@@ -10,7 +9,7 @@ function NavHeader() {
 				flexDirection: "column",
 				justifyContent: "space-between",
 			}}>
-			<Title order={1}>ShufflePlus</Title>
+			<Title order={4}>ShufflePlus</Title>
 		</Box>
 	);
 }

@@ -75,14 +75,16 @@ function EditHeader() {
 						justifyContent: "flex-start",
 						alignItems: "flex-start",
 					}}>
-					<Badge size="md" variant="filled">
+					<Badge size="md" ml={3} variant="filled">
 						{currentPlaylist.public ? "Public" : "Private"}
 					</Badge>
-					<Title order={1} style={{ fontSize: "5vw", lineClamp: "2" }}>
+					<Title order={1} style={{ lineClamp: "2" }}>
 						{currentPlaylist.name}
 					</Title>
-					<Text size="md">{currentPlaylist.description}</Text>
-					<Text size="md" style={{ fontWeight: "bold" }}>
+					<Text size="md" ml={3}>
+						{currentPlaylist.description}
+					</Text>
+					<Text size="md" ml={3} style={{ fontWeight: "bold" }}>
 						{`${currentPlaylist.owner.display_name} -  ${currentPlaylist.tracks.total} Tracks`}
 					</Text>
 				</Container>

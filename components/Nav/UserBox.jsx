@@ -34,7 +34,10 @@ export default function UserBox() {
 						justifyContent: "center",
 					}}>
 					<Text size="sm">{session.user.name}</Text>
-					<Anchor size="xs" onClick={signOut}>
+					<Anchor
+						size="xs"
+						onClick={signOut}
+						style={{ color: theme.colors.green[9] }}>
 						Sign Out
 					</Anchor>
 				</Box>

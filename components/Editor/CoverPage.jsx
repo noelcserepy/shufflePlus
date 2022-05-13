@@ -47,19 +47,22 @@ function CoverPage() {
 					style={{
 						position: "absolute",
 						transformOrigin: "70% 50%",
-						transform: "scale(2.5)",
+						transform: "scale(2)",
 						zIndex: "-1",
 					}}
 				/>
-				<Title order={1} style={{ fontSize: 56, color: "#ffffff" }}>
+				<Title order={1} style={{ color: "#ffffff" }}>
 					Choose one of your playlists
 				</Title>
 				<Text
-					size="xl"
 					mt="md"
 					mb="xl"
-					weight={10}
-					style={{ color: theme.colors.dark[1] }}>
+					color="white"
+					size="xl"
+					weight="400"
+					sx={{
+						fontFamily: theme.other.fontFamilySecondary,
+					}}>
 					Or create a new one
 				</Text>
 				<Space h="xs" />
