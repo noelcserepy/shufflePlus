@@ -1,12 +1,13 @@
-import { Button, Divider, ScrollArea, useMantineTheme } from "@mantine/core";
+import { ScrollArea, useMantineTheme } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 import useStore from "../../lib/store";
 import useSpotify from "../../lib/useSpotify";
 import CoverPage from "./CoverPage";
 import EditHeader from "./EditHeader";
-import EditOptions from "./EditOptions";
-import TrackList from "./TrackList";
+import EditOptions from "./Options/EditOptions";
+import TrackList from "./Tracks/TrackList";
 
 function EditWindow() {
 	const { data: session, status } = useSession();
@@ -36,11 +37,21 @@ function EditWindow() {
 			style={{
 				width: "100%",
 				height: "100vh",
+				backgroundColor: theme.colors.dark[7],
 			}}>
 			<EditHeader />
 			<EditOptions />
-			<Divider my="xs" sx={theme => theme.colors.dark[0]} />
 			<TrackList />
+			<Toaster
+				position="top-right"
+				toastOptions={{
+					style: {
+						borderRadius: "5px",
+						background: theme.colors.dark[9],
+						color: theme.colors.dark[0],
+					},
+				}}
+			/>
 		</ScrollArea>
 	);
 }

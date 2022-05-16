@@ -37,7 +37,7 @@ export default function UserBox() {
 					<Anchor
 						size="xs"
 						onClick={signOut}
-						style={{ color: theme.colors.green[9] }}>
+						style={{ color: theme.colors[theme.primaryColor][8] }}>
 						Sign Out
 					</Anchor>
 				</Box>

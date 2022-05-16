@@ -7,6 +7,8 @@ import {
 	Divider,
 	Text,
 	Group,
+	UnstyledButton,
+	ThemeIcon,
 } from "@mantine/core";
 import PlaylistList from "../components/Nav/PlaylistList";
 import React from "react";
@@ -26,17 +28,25 @@ export default function Editor() {
 			margin={0}
 			padding={0}
 			navbar={
-				<Navbar width={{ base: 300 }} p="xl" style={{ color: "white" }}>
+				<Navbar
+					width={{ base: 300 }}
+					p="xl"
+					style={{
+						color: theme.colors.dark[0],
+						backgroundColor: theme.colors.dark[9],
+					}}>
 					<Navbar.Section mb="xl">
 						<NavHeader />
 					</Navbar.Section>
 					<Navbar.Section my="xl">
-						<Group>
-							<ActionIcon width="35px">
-								<Plus />
-							</ActionIcon>
-							<Text>Add new Playlist</Text>
-						</Group>
+						<UnstyledButton>
+							<Group>
+								<ThemeIcon variant="outline" width="35px">
+									<Plus />
+								</ThemeIcon>
+								<Text>Add new Playlist</Text>
+							</Group>
+						</UnstyledButton>
 					</Navbar.Section>
 					<Navbar.Section
 						grow

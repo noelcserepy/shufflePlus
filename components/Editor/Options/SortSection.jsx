@@ -1,16 +1,9 @@
-import {
-	Box,
-	Button,
-	InputWrapper,
-	SegmentedControl,
-	Stack,
-	Text,
-	Title,
-	useMantineTheme,
-} from "@mantine/core";
+import { Box, Button, SegmentedControl, useMantineTheme } from "@mantine/core";
 import { useState } from "react";
-import useStore from "../../lib/store";
-import useSpotify from "../../lib/useSpotify";
+import toast from "react-hot-toast";
+import { SortAscending } from "tabler-icons-react";
+import useStore from "../../../lib/store";
+import useSpotify from "../../../lib/useSpotify";
 import EditOptionsSection from "./EditOptionsSection";
 
 function dynamicSort(nestProperty, property, sortOrder) {
@@ -51,8 +44,8 @@ function createNewFeatures(f) {
 export default function SortSection() {
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
+	const currentColors = useStore(state => state.currentColors);
 	const theme = useMantineTheme();
-
 	const s = useSpotify();
 
 	const [sortParam, setSortParam] = useState("hype");
@@ -77,11 +70,35 @@ export default function SortSection() {
 		};
 
 		fetchTrackFeatures();
+		toast.success("Successfully Sorted!");
 	};
 
 	return (
-		<EditOptionsSection title="Sort" text="Choose your order type">
+		<EditOptionsSection
+			title="Sort"
+			text="Choose your order type"
+			icon={
+				<SortAscending size={40} color={theme.colors[theme.primaryColor][5]} />
+			}>
 			<SegmentedControl
+				color={theme.primaryColor}
+				radius="xs"
+				sx={theme => ({
+					backgroundColor: theme.colors.dark[5],
+				})}
+				value={sortOrder}
+				onChange={setSortOrder}
+				data={[
+					{ label: "Increasing", value: 1 },
+					{ label: "Decreasing", value: -1 },
+				]}
+			/>
+			<SegmentedControl
+				color={theme.primaryColor}
+				radius="xs"
+				sx={theme => ({
+					backgroundColor: theme.colors.dark[5],
+				})}
 				value={sortParam}
 				onChange={setSortParam}
 				data={[
@@ -90,15 +107,9 @@ export default function SortSection() {
 					{ label: "Gig", value: "gig" },
 				]}
 			/>
-			<SegmentedControl
-				value={sortOrder}
-				onChange={setSortOrder}
-				data={[
-					{ label: "Increasing", value: 1 },
-					{ label: "Decreasing", value: -1 },
-				]}
-			/>
-			<Button onClick={() => handleSort()}>Sort</Button>
+			<Button variant="outline" onClick={() => handleSort()}>
+				Sort
+			</Button>
 		</EditOptionsSection>
 	);
 }

@@ -23,8 +23,8 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 							"#1E2D24",
 						],
 					},
-					primaryColor: "green",
-					primaryShade: 5,
+					primaryColor: "grape",
+					primaryShade: { light: 6, dark: 8 },
 					fontFamily: "NunitoSans, sans-serif",
 					headings: {
 						fontFamily: "LibreFranklin, sans-serif",

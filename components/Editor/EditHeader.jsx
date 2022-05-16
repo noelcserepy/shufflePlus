@@ -23,7 +23,7 @@ function EditHeader() {
 	const theme = useMantineTheme();
 	const [colors, setColors] = useState(null);
 	const [opened, setOpened] = useState(false);
-
+	const setCurrentColors = useStore(state => state.setCurrentColors);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
 
 	if (!currentPlaylist)
@@ -42,6 +42,8 @@ function EditHeader() {
 			theme.fn.darken(col[2], 0.8)
 		);
 		setColors(bg);
+		const newColors = [col[4], col[2]];
+		setCurrentColors(newColors);
 	});
 
 	return (
