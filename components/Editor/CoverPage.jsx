@@ -1,72 +1,40 @@
-import { Box, Image, Space, Text, Title, useMantineTheme } from "@mantine/core";
+import {
+	Box,
+	Button,
+	Image,
+	Space,
+	Text,
+	Title,
+	useMantineTheme,
+} from "@mantine/core";
 
 function CoverPage() {
 	const theme = useMantineTheme();
+	const { dark } = theme.colors;
 	return (
 		<Box
-			style={{
-				position: "relative",
-				width: "100%",
-				height: "100%",
+			px={100}
+			sx={{
 				overflow: "hidden",
+				height: "100vh",
+				background: theme.colors.dark[7],
+				color: "white",
+				position: "relative",
 			}}>
-			<Image
-				src="/guitar.svg"
-				style={{
-					position: "absolute",
-					right: "10%",
-					top: "-5%",
-				}}
-			/>
-			<Image
-				src="/note1.svg"
-				style={{
-					position: "absolute",
-					right: "30%",
-					bottom: "-10%",
-				}}
-			/>
-			<Image
-				src="/note2.svg"
-				style={{
-					position: "absolute",
-					right: "-5%",
-					bottom: "20%",
-				}}
-			/>
-			<Box
-				style={{
-					position: "relative",
-					top: "177px",
-					left: "36px",
-					width: "40%",
-					zIndex: "2",
-				}}>
-				<Image
-					src="/blob.svg"
-					style={{
-						position: "absolute",
-						transformOrigin: "70% 50%",
-						transform: "scale(2)",
-						zIndex: "-1",
-					}}
-				/>
-				<Title order={1} style={{ color: "#ffffff" }}>
-					Choose one of your playlists
-				</Title>
-				<Text
-					mt="md"
-					mb="xl"
-					color="white"
-					size="xl"
-					weight="400"
-					sx={{
-						fontFamily: theme.other.fontFamilySecondary,
-					}}>
-					Or create a new one
+			<Box mt={200} sx={{ maxWidth: 700 }}>
+				<Title order={3}>Use your existing playlists as inspiration</Title>
+				<Text my="lg" size="md" color={dark[2]} sx={{ letterSpacing: 0.8 }}>
+					Or create a new one from scratch
 				</Text>
-				<Space h="xs" />
-				<Image src="/Arrow.svg" width="20%" mt="xl" />
+				<span>
+					<Image src="/Arrow.svg" sx={{ maxWidth: 100 }} />
+					<Button variant="outline" sx={{ letterSpacing: 0.8 }}>
+						Create new
+					</Button>
+				</span>
+				<Text mt="md" size="xs" color={dark[2]} sx={{ letterSpacing: 0.8 }}>
+					No signup needed.
+				</Text>
 			</Box>
 		</Box>
 	);

@@ -7,7 +7,9 @@ import {
 	Divider,
 	UnstyledButton,
 	useMantineTheme,
+	Box,
 } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
 
 import {
 	Plus,
@@ -22,40 +24,48 @@ import useStore from "../../lib/store";
 export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const theme = useMantineTheme();
+	const { dark } = theme.colors;
+	const { hovered, ref } = useHover();
 
 	let { name, images } = data;
 	const image = images[2].url;
 
 	return (
-		<Group
-			position="apart"
+		<Box
+			onClick={() => {
+				setCurrentPlaylist({ ...data });
+			}}
 			style={{
+				radius: "2px",
 				width: "100%",
-				height: "35px",
-				paddingBottom: 5,
-				paddingTop: 5,
+				height: "33px",
 				marginBottom: 10,
+				display: "flex",
 				flexWrap: "nowrap",
 			}}>
 			<UnstyledButton
-				onClick={() => {
-					setCurrentPlaylist({ ...data });
-				}}
+				ref={ref}
 				style={{
+					backgroundColor: hovered ? dark[5] : "",
+					flexGrow: 1,
 					display: "flex",
 					alignItems: "center",
 					justifyContent: "flex-start",
 					flexWrap: "nowrap",
 					height: "100%",
 				}}>
-				<Image radius="xs" src={image} fit="contain" height={30} />
-				<Space w="md" />
+				<Image mr="md" radius="xs" src={image} fit="contain" height={30} />
 				<Text size="sm" lineClamp={1} style={{ overflow: "ellipsis" }}>
 					{name}
 				</Text>
 			</UnstyledButton>
 
-			<Menu position="right" withArrow>
+			<Menu
+				mr={5}
+				sx={{ alignSelf: "center" }}
+				position="right"
+				withArrow
+				shadow={"sm"}>
 				<Menu.Label>{name}</Menu.Label>
 				<Menu.Item icon={<Plus size={14} />}>Create new from this</Menu.Item>
 				<Menu.Item icon={<ArrowMerge size={14} />}>Merge</Menu.Item>
@@ -67,6 +77,6 @@ export default function Playlist({ data }) {
 					Delete
 				</Menu.Item>
 			</Menu>
-		</Group>
+		</Box>
 	);
 }

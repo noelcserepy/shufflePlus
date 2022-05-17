@@ -1,6 +1,7 @@
-import { Title, Box } from "@mantine/core";
+import { Title, Box, useMantineTheme } from "@mantine/core";
 
 function NavHeader() {
+	const theme = useMantineTheme();
 	return (
 		<Box
 			style={{
@@ -9,7 +10,10 @@ function NavHeader() {
 				flexDirection: "column",
 				justifyContent: "space-between",
 			}}>
-			<Title order={4}>ShufflePlus</Title>
+			<Title order={4}>
+				Shuffle
+				<span style={{ color: theme.colors[theme.primaryColor][5] }}>Plus</span>
+			</Title>
 		</Box>
 	);
 }
