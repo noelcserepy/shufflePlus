@@ -19,7 +19,7 @@ function EditWindow() {
 	useEffect(() => {
 		const fetchPlaylistTracks = async () => {
 			const result = await s.getPlaylistTracks(currentPlaylist.id);
-			setCurrentTracks([...result.items]);
+			setCurrentTracks([...result.body.items]);
 		};
 
 		if (currentPlaylist) {

@@ -2,20 +2,15 @@ import {
 	ActionIcon,
 	Box,
 	Image,
-	List,
 	Space,
 	Table,
 	Text,
 	useMantineTheme,
 } from "@mantine/core";
-import { useEffect } from "react";
 import { Heart, Trash } from "tabler-icons-react";
 import useStore from "../../../lib/store";
-import useSpotify from "../../../lib/useSpotify";
-import Track from "./Track";
 
 function TrackList() {
-	const s = useSpotify();
 	const theme = useMantineTheme();
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);

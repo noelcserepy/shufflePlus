@@ -27,7 +27,7 @@ export default function Home() {
 	if (!session)
 		return (
 			<Box
-				px={100}
+				px={200}
 				pt={36}
 				sx={{
 					overflow: "hidden",
@@ -59,7 +59,7 @@ export default function Home() {
 				</Box>
 				<Image
 					src="/albums.svg"
-					sx={{ position: "absolute", top: 0, right: 0 }}
+					sx={{ position: "absolute", bottom: 0, right: 0, height: "100vh" }}
 				/>
 			</Box>
 		);

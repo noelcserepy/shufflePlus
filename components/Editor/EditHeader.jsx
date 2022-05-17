@@ -2,15 +2,9 @@ import {
 	ActionIcon,
 	Badge,
 	Box,
-	Button,
 	Container,
-	Group,
 	Image,
-	Input,
-	Modal,
-	Stack,
 	Text,
-	TextInput,
 	Title,
 	useMantineTheme,
 } from "@mantine/core";
@@ -18,6 +12,7 @@ import { useState } from "react";
 import useStore from "../../lib/store";
 import { prominent } from "color.js";
 import { Edit } from "tabler-icons-react";
+import PlaylistDetailModal from "../Common/PlaylistDetailModal";
 
 function EditHeader() {
 	const theme = useMantineTheme();
@@ -25,7 +20,6 @@ function EditHeader() {
 	const [opened, setOpened] = useState(false);
 	const setCurrentColors = useStore(state => state.setCurrentColors);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
-
 	if (!currentPlaylist)
 		return (
 			<Box style={{ width: "50%", backgroundColor: theme.colors.dark[6] }} />
@@ -91,31 +85,10 @@ function EditHeader() {
 					</Text>
 				</Container>
 
-				<Modal
-					size="md"
-					centered
+				<PlaylistDetailModal
 					opened={opened}
-					onClose={() => setOpened(false)}
-					title="Edit Playlist">
-					<Box
-						style={{
-							display: "flex",
-							width: "100%",
-							justifyContent: "space-between",
-						}}>
-						<Image
-							style={{ width: "50%", boxShadow: "0px 0px 20px black" }}
-							src={currentPlaylist.images[0].url}
-						/>
-						<Stack>
-							<TextInput
-								label="Playlist name"
-								placeholder={currentPlaylist.name}
-							/>
-							<Button>Generate name</Button>
-						</Stack>
-					</Box>
-				</Modal>
+					setOpened={val => setOpened(val)}
+				/>
 
 				<ActionIcon onClick={() => setOpened(true)}>
 					<Edit></Edit>

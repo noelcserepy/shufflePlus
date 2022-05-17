@@ -23,7 +23,7 @@ function MergeSection() {
 	const handleMerge = () => {
 		const fetchPlaylistTracks = async () => {
 			const result = await s.getPlaylistTracks(playlistToMerge);
-			setCurrentTracks([...currentTracks, ...result.items]);
+			setCurrentTracks([...currentTracks, ...result.body.items]);
 		};
 
 		if (playlistToMerge) {

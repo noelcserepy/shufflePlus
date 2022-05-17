@@ -56,7 +56,8 @@ export default function SortSection() {
 			const trackIds = currentTracks.map(track => track.track.id);
 			let features = [];
 			const result = await s.getAudioFeaturesForTracks(trackIds);
-			features = result.audio_features;
+			console.log(result);
+			features = result.body.audio_features;
 			features.map(f => createNewFeatures(f));
 
 			const tracksWithFeatures = currentTracks.map((t, i) => {
