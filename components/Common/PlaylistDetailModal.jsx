@@ -23,8 +23,10 @@ function PlaylistDetailModal({ opened, setOpened }) {
 	const theme = useMantineTheme();
 	const s = useSpotify();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const [name, setName] = useState(currentPlaylist.name);
-	const [isPublic, setisPublic] = useState(currentPlaylist.public);
+	const [isPublic, setIsPublic] = useState(currentPlaylist.public);
+	console.log(isPublic);
 	const [description, setDescription] = useState(currentPlaylist.description);
 
 	const nameConfig = {
@@ -39,8 +41,13 @@ function PlaylistDetailModal({ opened, setOpened }) {
 
 		s.changePlaylistDetails(currentPlaylist.id, {
 			name,
-			isPublic,
+			public: isPublic,
 			description,
+		});
+
+		s.getPlaylist(currentPlaylist.id).then(res => {
+			setCurrentPlaylist(res.body);
+			console.log(res.body);
 		});
 		console.log("saved");
 	};
@@ -89,7 +96,9 @@ function PlaylistDetailModal({ opened, setOpened }) {
 						label="Public"
 						color={theme.primaryColor}
 						checked={isPublic}
-						onChange={event => setisPublic(event.currentTarget.checked)}
+						onChange={e => {
+							setIsPublic(e.currentTarget.checked);
+						}}
 					/>
 					<Button variant="outline" onClick={() => handleSave()}>
 						Save

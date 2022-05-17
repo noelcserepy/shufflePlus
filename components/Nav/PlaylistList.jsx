@@ -15,7 +15,6 @@ export default function PlaylistList() {
 	useEffect(() => {
 		const fetchPlaylists = async () => {
 			const result = await s.getUserPlaylists(session.user.id);
-			console.log(result);
 			setPlaylists([...result.body.items]);
 		};
 
