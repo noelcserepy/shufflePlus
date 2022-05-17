@@ -50,7 +50,7 @@ export default function Home() {
 						<br /> your playlists and keep them fresh!
 					</Text>
 
-					<Button onClick={signIn} sx={{ letterSpacing: 0.8 }}>
+					<Button onClick={() => signIn("spotify")} sx={{ letterSpacing: 0.8 }}>
 						Sign in with Spotify
 					</Button>
 					<Text mt="md" size="xs" color={dark[2]} sx={{ letterSpacing: 0.8 }}>

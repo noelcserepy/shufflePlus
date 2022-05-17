@@ -1,8 +1,6 @@
 import {
-	Group,
 	Image,
 	Menu,
-	Space,
 	Text,
 	Divider,
 	UnstyledButton,
@@ -23,6 +21,8 @@ import useStore from "../../lib/store";
 
 export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
+	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const isCurrent = currentPlaylist?.id === data.id;
 	const theme = useMantineTheme();
 	const { dark } = theme.colors;
 	const { hovered, ref } = useHover();
@@ -46,7 +46,7 @@ export default function Playlist({ data }) {
 			<UnstyledButton
 				ref={ref}
 				style={{
-					backgroundColor: hovered ? dark[5] : "",
+					backgroundColor: hovered || isCurrent ? dark[5] : "",
 					flexGrow: 1,
 					display: "flex",
 					alignItems: "center",
