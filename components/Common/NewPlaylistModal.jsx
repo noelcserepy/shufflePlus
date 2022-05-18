@@ -19,22 +19,16 @@ import {
 } from "unique-names-generator";
 import useSpotify from "../../lib/useSpotify";
 import toast from "react-hot-toast";
-import { useEffect } from "react";
 
-function PlaylistDetailModal({ opened, setOpened }) {
+function NewPlaylistModal({ opened, setOpened }) {
 	const theme = useMantineTheme();
 	const s = useSpotify();
-	const currentPlaylist = useStore(state => state.currentPlaylist);
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
-	const [name, setName] = useState(currentPlaylist.name);
-	const [isPublic, setIsPublic] = useState(currentPlaylist.public);
-	const [description, setDescription] = useState(currentPlaylist.description);
-
-	useEffect(() => {
-		setName(currentPlaylist.name);
-		setIsPublic(currentPlaylist.public);
-		setDescription(currentPlaylist.description);
-	}, [currentPlaylist]);
+	const setPlaylists = useStore(state => state.setPlaylists);
+	const playlists = useStore(state => state.playlists);
+	const [name, setName] = useState("");
+	const [isPublic, setIsPublic] = useState(true);
+	const [description, setDescription] = useState("");
 
 	const nameConfig = {
 		dictionaries: [adjectives, colrs],
@@ -42,35 +36,31 @@ function PlaylistDetailModal({ opened, setOpened }) {
 		style: "capital",
 	};
 
-	let image = "/note2.svg";
-	if (currentPlaylist.images.length > 2) {
-		image = currentPlaylist.images[0].url;
-	}
-
 	const handleSave = () => {
 		if (!name) {
 			toast.error("Name required");
 			return;
 		}
 
-		setOpened(false);
-
 		const options = {
-			name,
 			public: isPublic,
-			description: description ? description : ".",
+			description: description ? description : "Created by ShufflePlus",
 		};
 
-		s.changePlaylistDetails(currentPlaylist.id, options).then(res => {
-			console.log(res);
-			s.getPlaylist(currentPlaylist.id).then(res => {
-				console.log("res", res.body);
-				console.log("current before", currentPlaylist);
-				setCurrentPlaylist({ ...res.body });
-				toast.success("Details saved");
-				console.log("current after", currentPlaylist);
-			});
+		setOpened(false);
+
+		s.createPlaylist(name, options).then(res => {
+			if (res.statusCode === 201) {
+				console.log("Creating new", res.body);
+				setCurrentPlaylist(res.body);
+				setPlaylists([res.body, ...playlists]);
+				toast.success("New playlist created");
+			}
 		});
+
+		setName("");
+		setIsPublic(true);
+		setDescription("");
 	};
 
 	return (
@@ -87,16 +77,12 @@ function PlaylistDetailModal({ opened, setOpened }) {
 					width: "100%",
 					justifyContent: "space-between",
 				}}>
-				<Image
-					style={{ width: "50%", boxShadow: "0px 0px 20px black" }}
-					src={image}
-				/>
 				<Stack>
 					<TextInput
 						value={name}
 						onChange={e => setName(e.currentTarget.value)}
 						label="Playlist name"
-						placeholder={currentPlaylist.name}
+						placeholder={"My cool tracks"}
 						mb={-10}
 					/>
 					<Anchor
@@ -107,10 +93,10 @@ function PlaylistDetailModal({ opened, setOpened }) {
 					</Anchor>
 
 					<Textarea
+						placeholder="Your description..."
 						value={description}
 						onChange={e => setDescription(e.currentTarget.value)}
 						label="Description"
-						placeholder="Your description..."
 						radius="xs"
 					/>
 					<Switch
@@ -130,4 +116,4 @@ function PlaylistDetailModal({ opened, setOpened }) {
 	);
 }
 
-export default PlaylistDetailModal;
+export default NewPlaylistModal;

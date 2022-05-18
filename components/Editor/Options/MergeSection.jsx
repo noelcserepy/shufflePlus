@@ -14,8 +14,10 @@ function MergeSection() {
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
 	const [playlistToMerge, setPlaylistToMerge] = useState();
 
+	let image = "/note2.svg";
+
 	const selectData = playlists.map(p => ({
-		image: p.images[2].url,
+		image: p.images.length > 2 ? p.images[2] : image,
 		label: p.name,
 		value: p.id,
 	}));

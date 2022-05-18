@@ -1,23 +1,10 @@
-import {
-	AppShell,
-	useMantineTheme,
-	Navbar,
-	ScrollArea,
-	ActionIcon,
-	Divider,
-	Text,
-	Group,
-	UnstyledButton,
-	ThemeIcon,
-} from "@mantine/core";
+import { AppShell, useMantineTheme, Navbar, ScrollArea } from "@mantine/core";
 import PlaylistList from "../components/Nav/PlaylistList";
 import React from "react";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import EditWindow from "./Editor/EditWindow";
 import NavHeader from "./Nav/NavHeader";
 import UserBox from "./Nav/UserBox";
-import Player from "./Player/Player";
-import { Plus } from "tabler-icons-react";
 
 export default function Editor() {
 	const { data: session, status } = useSession();
@@ -38,16 +25,7 @@ export default function Editor() {
 					<Navbar.Section mb="xl">
 						<NavHeader />
 					</Navbar.Section>
-					<Navbar.Section my="xl">
-						<UnstyledButton>
-							<Group>
-								<ThemeIcon variant="outline" width="35px">
-									<Plus />
-								</ThemeIcon>
-								<Text>Add new Playlist</Text>
-							</Group>
-						</UnstyledButton>
-					</Navbar.Section>
+
 					<Navbar.Section
 						grow
 						my="xl"
@@ -56,6 +34,7 @@ export default function Editor() {
 						scrollHideDelay={100}>
 						<PlaylistList />
 					</Navbar.Section>
+
 					<Navbar.Section mt="xl">
 						<UserBox />
 					</Navbar.Section>

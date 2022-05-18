@@ -20,25 +20,31 @@ function EditHeader() {
 	const [opened, setOpened] = useState(false);
 	const setCurrentColors = useStore(state => state.setCurrentColors);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+
 	if (!currentPlaylist)
 		return (
 			<Box style={{ width: "50%", backgroundColor: theme.colors.dark[6] }} />
 		);
 
-	prominent(currentPlaylist.images[2].url, {
-		amount: 5,
-		format: "hex",
-		group: 100,
-	}).then(col => {
-		const bg = theme.fn.linearGradient(
-			180,
-			col[4],
-			theme.fn.darken(col[2], 0.8)
-		);
-		setColors(bg);
-		const newColors = [col[4], col[2]];
-		setCurrentColors(newColors);
-	});
+	let image = "/note2.svg";
+	if (currentPlaylist.images.length > 2) {
+		image = currentPlaylist.images[0].url;
+
+		prominent(currentPlaylist.images[2].url, {
+			amount: 5,
+			format: "hex",
+			group: 100,
+		}).then(col => {
+			const bg = theme.fn.linearGradient(
+				180,
+				col[4],
+				theme.fn.darken(col[2], 0.8)
+			);
+			setColors(bg);
+			const newColors = [col[4], col[2]];
+			setCurrentColors(newColors);
+		});
+	}
 
 	return (
 		<Box
@@ -59,7 +65,7 @@ function EditHeader() {
 				}}>
 				<Image
 					style={{ width: "250px", boxShadow: "0px 0px 20px black" }}
-					src={currentPlaylist.images[0].url}
+					src={image}
 				/>
 				<Container
 					style={{

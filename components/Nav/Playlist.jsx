@@ -28,7 +28,10 @@ export default function Playlist({ data }) {
 	const { hovered, ref } = useHover();
 
 	let { name, images } = data;
-	const image = images[2].url;
+	let image = "/note2.svg";
+	if (images.length > 2) {
+		image = images[2].url;
+	}
 
 	return (
 		<Box
@@ -60,7 +63,7 @@ export default function Playlist({ data }) {
 				</Text>
 			</UnstyledButton>
 
-			<Menu
+			{/* <Menu
 				mr={5}
 				sx={{ alignSelf: "center" }}
 				position="right"
@@ -76,7 +79,7 @@ export default function Playlist({ data }) {
 				<Menu.Item color="red" icon={<Trash size={14} />}>
 					Delete
 				</Menu.Item>
-			</Menu>
+			</Menu> */}
 		</Box>
 	);
 }
