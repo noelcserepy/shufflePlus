@@ -41,12 +41,9 @@ function createNewFeatures(f) {
 		0.1 * f.instrumentalness;
 }
 
-export default function SortSection() {
-	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
-	const currentPlaylist = useStore(state => state.currentPlaylist);
+export default function SortSection({ setEdited }) {
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
-	const currentColors = useStore(state => state.currentColors);
 	const theme = useMantineTheme();
 	const s = useSpotify();
 
@@ -70,7 +67,7 @@ export default function SortSection() {
 			tracksWithFeatures.sort(dynamicSort("features", sortParam, sortOrder));
 
 			setCurrentTracks(tracksWithFeatures);
-			setCurrentPlaylist({ ...currentPlaylist, edited: true });
+			setEdited(true);
 		};
 
 		fetchTrackFeatures();

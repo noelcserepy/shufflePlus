@@ -6,7 +6,7 @@ import useStore from "../../../lib/store";
 import useSpotify from "../../../lib/useSpotify";
 import EditOptionsSection from "./EditOptionsSection";
 
-function FillSection() {
+function FillSection({ setEdited }) {
 	const theme = useMantineTheme();
 	const [fill, setFill] = useState(1);
 	const s = useSpotify();
@@ -24,6 +24,7 @@ function FillSection() {
 			{
 				const newTracks = res.body.tracks.map(t => ({ track: t }));
 				setCurrentTracks([...currentTracks, ...newTracks]);
+				setEdited(true);
 				toast.success(`Filled ${fill} tracks`);
 			}
 		});

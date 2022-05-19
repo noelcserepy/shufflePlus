@@ -6,7 +6,7 @@ import useSpotify from "../../../lib/useSpotify";
 import EditOptionsSection from "./EditOptionsSection";
 import { toast } from "react-hot-toast";
 
-function MergeSection() {
+function MergeSection({ setEdited }) {
 	const theme = useMantineTheme();
 	const s = useSpotify();
 	const playlists = useStore(state => state.playlists);
@@ -29,6 +29,7 @@ function MergeSection() {
 		const fetchPlaylistTracks = async () => {
 			const result = await s.getPlaylistTracks(playlistToMerge);
 			setCurrentTracks([...currentTracks, ...result.body.items]);
+			setEdited(true);
 		};
 
 		if (playlistToMerge) {

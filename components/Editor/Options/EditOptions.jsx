@@ -6,13 +6,18 @@ import SaveSection from "./SaveSection";
 import SortSection from "./SortSection";
 
 function EditOptions() {
-	const theme = useMantineTheme();
+	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const theme = useMantineTheme();
 
 	if (!currentPlaylist)
 		return (
 			<Box style={{ width: "50%", backgroundColor: theme.colors.dark[6] }} />
 		);
+
+	const setEdited = edited => {
+		setCurrentPlaylist({ ...currentPlaylist, edited });
+	};
 
 	return (
 		<Box
@@ -23,13 +28,13 @@ function EditOptions() {
 				gap: "36px",
 				justifyContent: "space-evenly",
 			}}>
-			<SortSection />
+			<SortSection setEdited={val => setEdited(val)} />
 
-			<MergeSection />
+			<MergeSection setEdited={val => setEdited(val)} />
 
-			<FillSection />
+			<FillSection setEdited={val => setEdited(val)} />
 
-			<SaveSection />
+			<SaveSection setEdited={val => setEdited(val)} />
 		</Box>
 	);
 }

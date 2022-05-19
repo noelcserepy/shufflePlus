@@ -4,16 +4,18 @@ import {
 	UnstyledButton,
 	useMantineTheme,
 	Box,
-	ThemeIcon,
 } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
+import { useEffect, useState } from "react";
 
 import { Circle } from "tabler-icons-react";
 import useStore from "../../lib/store";
+import SaveDiscardModal from "./SaveDiscardModal";
 
 export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const [opened, setOpened] = useState(false);
 	const isCurrent = currentPlaylist?.id === data.id;
 	const isEdited = isCurrent && currentPlaylist?.edited;
 	const theme = useMantineTheme();
@@ -32,8 +34,7 @@ export default function Playlist({ data }) {
 		}
 
 		if (currentPlaylist?.edited) {
-			// warn user
-			console.log("warning user");
+			setOpened(true);
 			return;
 		}
 
@@ -78,6 +79,11 @@ export default function Playlist({ data }) {
 					</Box>
 				)}
 			</UnstyledButton>
+			<SaveDiscardModal
+				opened={opened}
+				setOpened={val => setOpened(val)}
+				data={data}
+			/>
 		</Box>
 	);
 }

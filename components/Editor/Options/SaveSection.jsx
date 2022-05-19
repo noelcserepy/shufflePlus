@@ -5,9 +5,10 @@ import useStore from "../../../lib/store";
 import useSpotify from "../../../lib/useSpotify";
 import EditOptionsSection from "./EditOptionsSection";
 
-function SaveSection() {
+function SaveSection({ setEdited }) {
 	const theme = useMantineTheme();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
+	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const currentTracks = useStore(state => state.currentTracks);
 	const primaryColor = theme.primaryColor;
 	const s = useSpotify();
@@ -18,6 +19,7 @@ function SaveSection() {
 		s.replaceTracksInPlaylist(currentPlaylist.id, trackUris).then(res => {
 			console.log(res);
 			if (res.statusCode === 200 || 201) {
+				setEdited(false);
 				toast.success("Saved tracks");
 			}
 		});
