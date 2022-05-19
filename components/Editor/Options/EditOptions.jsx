@@ -1,15 +1,13 @@
-import { Box, Button, useMantineTheme } from "@mantine/core";
-import { Checklist } from "tabler-icons-react";
+import { Box, useMantineTheme } from "@mantine/core";
 import useStore from "../../../lib/store";
-import EditOptionsSection from "./EditOptionsSection";
 import FillSection from "./FillSection";
 import MergeSection from "./MergeSection";
+import SaveSection from "./SaveSection";
 import SortSection from "./SortSection";
 
 function EditOptions() {
 	const theme = useMantineTheme();
 	const currentPlaylist = useStore(state => state.currentPlaylist);
-	const primaryColor = theme.primaryColor;
 
 	if (!currentPlaylist)
 		return (
@@ -31,12 +29,7 @@ function EditOptions() {
 
 			<FillSection />
 
-			<EditOptionsSection
-				title="Save"
-				text="Save the new playlist"
-				icon={<Checklist size={40} color={theme.colors[primaryColor][5]} />}>
-				<Button variant="outline">Save</Button>
-			</EditOptionsSection>
+			<SaveSection />
 		</Box>
 	);
 }

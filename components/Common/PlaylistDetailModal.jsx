@@ -62,13 +62,9 @@ function PlaylistDetailModal({ opened, setOpened }) {
 		};
 
 		s.changePlaylistDetails(currentPlaylist.id, options).then(res => {
-			console.log(res);
 			s.getPlaylist(currentPlaylist.id).then(res => {
-				console.log("res", res.body);
-				console.log("current before", currentPlaylist);
 				setCurrentPlaylist({ ...res.body });
 				toast.success("Details saved");
-				console.log("current after", currentPlaylist);
 			});
 		});
 	};

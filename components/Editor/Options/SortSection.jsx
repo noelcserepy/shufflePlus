@@ -42,6 +42,8 @@ function createNewFeatures(f) {
 }
 
 export default function SortSection() {
+	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
+	const currentPlaylist = useStore(state => state.currentPlaylist);
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
 	const currentColors = useStore(state => state.currentColors);
@@ -68,6 +70,7 @@ export default function SortSection() {
 			tracksWithFeatures.sort(dynamicSort("features", sortParam, sortOrder));
 
 			setCurrentTracks(tracksWithFeatures);
+			setCurrentPlaylist({ ...currentPlaylist, edited: true });
 		};
 
 		fetchTrackFeatures();

@@ -12,6 +12,8 @@ function MergeSection() {
 	const playlists = useStore(state => state.playlists);
 	const currentTracks = useStore(state => state.currentTracks);
 	const setCurrentTracks = useStore(state => state.setCurrentTracks);
+	const setCurrentEdited = useStore(state => state.setCurrentEdited);
+
 	const [playlistToMerge, setPlaylistToMerge] = useState();
 
 	let image = "/note2.svg";
@@ -23,6 +25,7 @@ function MergeSection() {
 	}));
 
 	const handleMerge = () => {
+		setCurrentEdited(true);
 		const fetchPlaylistTracks = async () => {
 			const result = await s.getPlaylistTracks(playlistToMerge);
 			setCurrentTracks([...currentTracks, ...result.body.items]);

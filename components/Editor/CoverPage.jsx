@@ -22,19 +22,19 @@ function CoverPage() {
 				position: "relative",
 			}}>
 			<Box mt={200} sx={{ maxWidth: 700 }}>
-				<Title order={3}>Use your existing playlists as inspiration</Title>
+				<Title order={3}>Pick one of your playlists to edit.</Title>
 				<Text my="lg" size="md" color={dark[2]} sx={{ letterSpacing: 0.8 }}>
 					Or create a new one from scratch
 				</Text>
-				<span>
-					<Image src="/Arrow.svg" sx={{ maxWidth: 100 }} />
-					<Button variant="outline" sx={{ letterSpacing: 0.8 }}>
-						Create new
-					</Button>
-				</span>
-				<Text mt="md" size="xs" color={dark[2]} sx={{ letterSpacing: 0.8 }}>
-					No signup needed.
-				</Text>
+				<Image
+					my="lg"
+					src="/Arrow.svg"
+					sx={{
+						maxWidth: 100,
+						filter:
+							"invert(53%) sepia(31%) saturate(4537%) hue-rotate(247deg) brightness(93%) contrast(96%)",
+					}}
+				/>
 			</Box>
 		</Box>
 	);

@@ -1,28 +1,21 @@
 import {
 	Image,
-	Menu,
 	Text,
-	Divider,
 	UnstyledButton,
 	useMantineTheme,
 	Box,
+	ThemeIcon,
 } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
 
-import {
-	Plus,
-	ArrowMerge,
-	Backspace,
-	Trash,
-	Archive,
-	Share,
-} from "tabler-icons-react";
+import { Circle } from "tabler-icons-react";
 import useStore from "../../lib/store";
 
 export default function Playlist({ data }) {
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
 	const isCurrent = currentPlaylist?.id === data.id;
+	const isEdited = isCurrent && currentPlaylist?.edited;
 	const theme = useMantineTheme();
 	const { dark } = theme.colors;
 	const { hovered, ref } = useHover();
@@ -33,10 +26,24 @@ export default function Playlist({ data }) {
 		image = images[2].url;
 	}
 
+	const handlePlaylistClick = () => {
+		if (isCurrent) {
+			return;
+		}
+
+		if (currentPlaylist?.edited) {
+			// warn user
+			console.log("warning user");
+			return;
+		}
+
+		setCurrentPlaylist({ ...data });
+	};
+
 	return (
 		<Box
 			onClick={() => {
-				setCurrentPlaylist({ ...data });
+				handlePlaylistClick();
 			}}
 			style={{
 				radius: "2px",
@@ -45,6 +52,7 @@ export default function Playlist({ data }) {
 				marginBottom: 10,
 				display: "flex",
 				flexWrap: "nowrap",
+				alignItems: "center",
 			}}>
 			<UnstyledButton
 				ref={ref}
@@ -58,28 +66,18 @@ export default function Playlist({ data }) {
 					height: "100%",
 				}}>
 				<Image mr="md" radius="xs" src={image} fit="contain" height={30} />
-				<Text size="sm" lineClamp={1} style={{ overflow: "ellipsis" }}>
+				<Text
+					size="sm"
+					lineClamp={1}
+					style={{ overflow: "ellipsis", flexGrow: "1" }}>
 					{name}
 				</Text>
+				{isEdited && (
+					<Box sx={{ justifySelf: "flex-end", alignItems: "center" }}>
+						<Circle size={15} color={theme.colors[theme.primaryColor][5]} />
+					</Box>
+				)}
 			</UnstyledButton>
-
-			{/* <Menu
-				mr={5}
-				sx={{ alignSelf: "center" }}
-				position="right"
-				withArrow
-				shadow={"sm"}>
-				<Menu.Label>{name}</Menu.Label>
-				<Menu.Item icon={<Plus size={14} />}>Create new from this</Menu.Item>
-				<Menu.Item icon={<ArrowMerge size={14} />}>Merge</Menu.Item>
-				<Menu.Item icon={<Backspace size={14} />}>Rename</Menu.Item>
-				<Menu.Item icon={<Archive size={14} />}>Archive</Menu.Item>
-				<Menu.Item icon={<Share size={14} />}>Share</Menu.Item>
-				<Divider />
-				<Menu.Item color="red" icon={<Trash size={14} />}>
-					Delete
-				</Menu.Item>
-			</Menu> */}
 		</Box>
 	);
 }

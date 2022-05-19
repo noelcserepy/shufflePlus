@@ -60,8 +60,8 @@ function TrackList() {
 	}));
 
 	const rows = tableData.map((t, i) => (
-		<tr key={`${t.id}--${i}`}>
-			<td>{t.index}</td>
+		<tr key={`${t.id}--${i + 1}`}>
+			<td>{t.index + 1}</td>
 			<td>{t.title}</td>
 			<td>{t.heart}</td>
 			<td>{t.delete}</td>
