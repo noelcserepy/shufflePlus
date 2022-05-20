@@ -51,7 +51,6 @@ function NewPlaylistModal({ opened, setOpened }) {
 
 		s.createPlaylist(name, options).then(res => {
 			if (res.statusCode === 201) {
-				console.log("Creating new", res.body);
 				setCurrentPlaylist(res.body);
 				setPlaylists([res.body, ...playlists]);
 				toast.success("New playlist created");

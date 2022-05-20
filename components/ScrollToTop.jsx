@@ -6,9 +6,7 @@ import { useEffect, useRef } from "react";
 export default function ScrollToTop() {
 	const [scroll, scrollTo] = useWindowScroll();
 
-	useEffect(() => {
-		console.log(scroll);
-	}, [scroll]);
+	useEffect(() => {}, [scroll]);
 	const viewport = useRef(window);
 	const scrollToTop = () =>
 		viewport.current.scrollTo({ top: 0, behavior: "smooth" });

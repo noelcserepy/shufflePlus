@@ -16,8 +16,7 @@ async function refreshAccessToken(token) {
 			refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
 		};
 	} catch (error) {
-		console.log("sali", error);
-
+		console.log(error);
 		return {
 			...token,
 			error: "RefreshAccessTokenError",

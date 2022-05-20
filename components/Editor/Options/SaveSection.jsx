@@ -14,10 +14,8 @@ function SaveSection({ setEdited }) {
 	const s = useSpotify();
 
 	const handleSave = () => {
-		console.log(currentPlaylist);
 		const trackUris = currentTracks.map(t => t.track.uri);
 		s.replaceTracksInPlaylist(currentPlaylist.id, trackUris).then(res => {
-			console.log(res);
 			if (res.statusCode === 200 || 201) {
 				setEdited(false);
 				toast.success("Saved tracks");

@@ -55,7 +55,6 @@ export default function SortSection({ setEdited }) {
 			const trackIds = currentTracks.map(track => track.track.id);
 			let features = [];
 			const result = await s.getAudioFeaturesForTracks(trackIds);
-			console.log(result);
 			features = result.body.audio_features;
 			features.map(f => createNewFeatures(f));
 

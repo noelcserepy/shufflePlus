@@ -3,7 +3,6 @@ import { MantineProvider } from "@mantine/core";
 import { SessionProvider } from "next-auth/react";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
-	console.log("app session", session);
 	return (
 		<SessionProvider session={session}>
 			<MantineProvider
