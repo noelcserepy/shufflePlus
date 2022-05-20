@@ -2,6 +2,7 @@ import {
 	Box,
 	Button,
 	Image,
+	MediaQuery,
 	Text,
 	Title,
 	useMantineTheme,
@@ -57,10 +58,12 @@ export default function Home() {
 						No new account needed.
 					</Text>
 				</Box>
-				{/* <Image
-					src="/albums.svg"
-					sx={{ position: "absolute", left: "40%", top: 0, height: "100vh" }}
-				/> */}
+				<MediaQuery smallerThan="xl" styles={{ display: "none" }}>
+					<Image
+						src="/albums.svg"
+						sx={{ position: "absolute", top: 0, right: 0, height: "100vh" }}
+					/>
+				</MediaQuery>
 			</Box>
 		);
 	if (session) return <Editor />;
