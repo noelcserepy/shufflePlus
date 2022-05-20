@@ -6,7 +6,7 @@ import {
 	Title,
 	useMantineTheme,
 } from "@mantine/core";
-import { getProviders, signIn, signOut, useSession } from "next-auth/react";
+import { getProviders, signIn, useSession } from "next-auth/react";
 import Editor from "../components/Editor";
 
 export async function getServerSideProps() {
@@ -54,7 +54,7 @@ export default function Home() {
 						Sign in with Spotify
 					</Button>
 					<Text mt="md" size="xs" color={dark[2]} sx={{ letterSpacing: 0.8 }}>
-						No signup needed.
+						No new account needed.
 					</Text>
 				</Box>
 				<Image

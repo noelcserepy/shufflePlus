@@ -16,7 +16,7 @@ async function refreshAccessToken(token) {
 			refreshToken: refreshedToken.refresh_token ?? token.refreshToken,
 		};
 	} catch (error) {
-		console.log(error);
+		console.log("sali", error);
 
 		return {
 			...token,
@@ -37,6 +37,7 @@ export default NextAuth({
 
 	callbacks: {
 		async jwt({ token, account, user }) {
+			console.log("JWT callback is called");
 			// Initial sign in
 			if (account && user) {
 				return {
@@ -49,9 +50,11 @@ export default NextAuth({
 			}
 			// Return previous token if access token has not expired yet
 			if (Date.now() < token.accessTokenExpires) {
+				console.log("existing token still valid", token);
 				return token;
 			}
 			// Access token has expired, so we refresh it
+			console.log("accesstoken expired, refreshing..");
 			return await refreshAccessToken(token);
 		},
 

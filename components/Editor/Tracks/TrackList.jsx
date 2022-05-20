@@ -23,53 +23,56 @@ function TrackList() {
 	};
 
 	const tableData = currentTracks.map((t, i) => ({
-		index: i,
+		index: (
+			<Box style={{ width: "20px" }}>
+				<Text style={{ width: "20px" }}>{i + 1}</Text>
+			</Box>
+		),
 		title: (
 			<Box
 				style={{
 					display: "flex",
+					justifyContent: "space-between",
 					alignItems: "center",
-					justifyContent: "flex-start",
-					height: "20px",
 				}}>
-				<Image src={t.track.album.images[2].url} radius="sm" height={30} />
-				<Space w="md" />
-				<Box style={{ maxWidth: "80%" }}>
-					<Text size="sm" lineClamp={1} style={{ textOverflow: "ellipsis" }}>
-						{t.track.name}
-					</Text>
-					<Text
-						size="xs"
-						lineClamp={1}
-						style={{ color: theme.colors.dark[2], textOverflow: "ellipsis" }}>
-						{t.track.artists.map(a => a.name).join(", ")}
-					</Text>
+				<Box
+					style={{
+						display: "flex",
+						alignItems: "center",
+						justifyContent: "flex-start",
+						alignItems: "center",
+						height: "20px",
+					}}>
+					<Image src={t.track.album.images[2].url} radius="sm" height={30} />
+					<Space w="md" />
+					<Box>
+						<Text size="sm" lineClamp={1} style={{ textOverflow: "ellipsis" }}>
+							{t.track.name}
+						</Text>
+						<Text
+							size="xs"
+							lineClamp={1}
+							style={{ color: theme.colors.dark[2], textOverflow: "ellipsis" }}>
+							{t.track.artists.map(a => a.name).join(", ")}
+						</Text>
+					</Box>
 				</Box>
+				<ActionIcon color="red" onClick={() => handleDelete(t)}>
+					<Trash size={18} />
+				</ActionIcon>
 			</Box>
-		),
-		heart: (
-			<ActionIcon>
-				<Heart size={18} />
-			</ActionIcon>
-		),
-		delete: (
-			<ActionIcon color="red" onClick={() => handleDelete(t)}>
-				<Trash size={18} />
-			</ActionIcon>
 		),
 	}));
 
 	const rows = tableData.map((t, i) => (
 		<tr key={`${t.id}--${i + 1}`}>
-			<td>{t.index + 1}</td>
-			<td>{t.title}</td>
-			<td>{t.heart}</td>
-			<td>{t.delete}</td>
+			<td style={{ padding: "10px", width: "20px" }}>{t.index}</td>
+			<td style={{ padding: "10px" }}>{t.title}</td>
 		</tr>
 	));
 
 	return (
-		<Box size="lg" p={30}>
+		<Box p={36}>
 			<Table
 				highlightOnHover
 				horizontalSpacing="xs"
@@ -79,8 +82,6 @@ function TrackList() {
 					<tr>
 						<th>#</th>
 						<th>Title</th>
-						<th></th>
-						<th></th>
 					</tr>
 				</thead>
 				<tbody>{rows}</tbody>

@@ -4,10 +4,15 @@ import { Box, useMantineTheme } from "@mantine/core";
 import { useSession } from "next-auth/react";
 import Playlist from "./Playlist";
 import useStore from "../../lib/store";
+import { useState } from "react";
+import SaveDiscardModal from "./SaveDiscardModal";
 
 export default function PlaylistList() {
 	const playlists = useStore(state => state.playlists);
 	const setPlaylists = useStore(state => state.setPlaylists);
+	const [opened, setOpened] = useState(false);
+	const [nextPlaylist, setNextPlaylist] = useState();
+
 	const theme = useMantineTheme();
 	const { data: session, status } = useSession();
 	const s = useSpotify();
@@ -24,8 +29,19 @@ export default function PlaylistList() {
 	return (
 		<Box>
 			{playlists.map(p => (
-				<Playlist key={p.id} data={p} />
+				<Playlist
+					key={p.id}
+					data={p}
+					opened={opened}
+					setOpened={val => setOpened(val)}
+					setNextPlaylist={val => setNextPlaylist(val)}
+				/>
 			))}
+			<SaveDiscardModal
+				opened={opened}
+				setOpened={val => setOpened(val)}
+				nextPlaylist={nextPlaylist}
+			/>
 		</Box>
 	);
 }

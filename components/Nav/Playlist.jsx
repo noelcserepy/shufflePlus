@@ -6,24 +6,24 @@ import {
 	Box,
 } from "@mantine/core";
 import { useHover } from "@mantine/hooks";
-import { useEffect, useState } from "react";
-
 import { Circle } from "tabler-icons-react";
 import useStore from "../../lib/store";
-import SaveDiscardModal from "./SaveDiscardModal";
 
-export default function Playlist({ data }) {
+export default function Playlist({ setOpened, setNextPlaylist, data }) {
+	const theme = useMantineTheme();
+
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 	const currentPlaylist = useStore(state => state.currentPlaylist);
-	const [opened, setOpened] = useState(false);
+
 	const isCurrent = currentPlaylist?.id === data.id;
 	const isEdited = isCurrent && currentPlaylist?.edited;
-	const theme = useMantineTheme();
-	const { dark } = theme.colors;
+
 	const { hovered, ref } = useHover();
+	const { dark } = theme.colors;
 
 	let { name, images } = data;
 	let image = "/note2.svg";
+
 	if (images.length > 2) {
 		image = images[2].url;
 	}
@@ -34,6 +34,7 @@ export default function Playlist({ data }) {
 		}
 
 		if (currentPlaylist?.edited) {
+			setNextPlaylist(data);
 			setOpened(true);
 			return;
 		}
@@ -79,11 +80,6 @@ export default function Playlist({ data }) {
 					</Box>
 				)}
 			</UnstyledButton>
-			<SaveDiscardModal
-				opened={opened}
-				setOpened={val => setOpened(val)}
-				data={data}
-			/>
 		</Box>
 	);
 }

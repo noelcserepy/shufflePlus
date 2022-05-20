@@ -55,7 +55,7 @@ function EditHeader() {
 			}}>
 			<Box
 				size="lg"
-				p={30}
+				p={36}
 				style={{
 					height: "100%",
 					display: "flex",
@@ -97,7 +97,7 @@ function EditHeader() {
 				/>
 
 				<ActionIcon onClick={() => setOpened(true)}>
-					<Edit></Edit>
+					<Edit />
 				</ActionIcon>
 			</Box>
 		</Box>

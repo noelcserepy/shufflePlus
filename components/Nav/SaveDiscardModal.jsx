@@ -1,8 +1,7 @@
 import { Box, Button, Modal, Text, useMantineTheme } from "@mantine/core";
-import { useEffect } from "react";
 import useStore from "../../lib/store";
 
-function SaveDiscardModal({ opened, setOpened, data }) {
+function SaveDiscardModal({ opened, setOpened, nextPlaylist }) {
 	const currentPlaylist = useStore(state => state.currentPlaylist);
 	const setCurrentPlaylist = useStore(state => state.setCurrentPlaylist);
 
@@ -10,7 +9,7 @@ function SaveDiscardModal({ opened, setOpened, data }) {
 
 	const handleDiscard = () => {
 		setOpened(false);
-		setCurrentPlaylist({ ...data });
+		setCurrentPlaylist({ ...nextPlaylist });
 	};
 
 	return (
@@ -25,7 +24,7 @@ function SaveDiscardModal({ opened, setOpened, data }) {
 				them?
 			</Text>
 			<Box>
-				<Button mt={36} mr={20}>
+				<Button mt={36} mr={20} onClick={() => setOpened(false)}>
 					Go back and save
 				</Button>
 				<Button variant="outline" onClick={() => handleDiscard()}>
