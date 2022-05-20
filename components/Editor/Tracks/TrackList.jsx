@@ -7,7 +7,7 @@ import {
 	Text,
 	useMantineTheme,
 } from "@mantine/core";
-import { Heart, Trash } from "tabler-icons-react";
+import { Trash } from "tabler-icons-react";
 import useStore from "../../../lib/store";
 
 function TrackList() {

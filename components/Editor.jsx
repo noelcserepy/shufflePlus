@@ -6,7 +6,6 @@ import {
 	Header,
 	MediaQuery,
 	Burger,
-	Text,
 	Title,
 } from "@mantine/core";
 import PlaylistList from "../components/Nav/PlaylistList";
@@ -15,7 +14,6 @@ import { useSession } from "next-auth/react";
 import EditWindow from "./Editor/EditWindow";
 import NavHeader from "./Nav/NavHeader";
 import UserBox from "./Nav/UserBox";
-import Nav from "./Nav/Nav";
 
 export default function Editor() {
 	const { data: session, status } = useSession();

@@ -57,10 +57,10 @@ export default function Home() {
 						No new account needed.
 					</Text>
 				</Box>
-				<Image
+				{/* <Image
 					src="/albums.svg"
-					sx={{ position: "absolute", bottom: 0, right: 0, height: "100vh" }}
-				/>
+					sx={{ position: "absolute", left: "40%", top: 0, height: "100vh" }}
+				/> */}
 			</Box>
 		);
 	if (session) return <Editor />;
