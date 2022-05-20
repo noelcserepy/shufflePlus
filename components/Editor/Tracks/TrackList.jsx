@@ -42,11 +42,13 @@ function TrackList() {
 						justifyContent: "flex-start",
 						alignItems: "center",
 						height: "20px",
+						textOverflow: "ellipsis",
+						maxWidth: "70%",
 					}}>
 					<Image src={t.track.album.images[2].url} radius="sm" height={30} />
 					<Space w="md" />
 					<Box>
-						<Text size="sm" lineClamp={1} style={{ textOverflow: "ellipsis" }}>
+						<Text size="sm" lineClamp={1}>
 							{t.track.name}
 						</Text>
 						<Text

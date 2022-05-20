@@ -11,7 +11,7 @@ function NavHeader() {
 				justifyContent: "space-between",
 			}}>
 			<Title order={4}>
-				Shuffle
+				<span style={{ color: theme.colors.gray[0] }}>Shuffle</span>
 				<span style={{ color: theme.colors[theme.primaryColor][5] }}>Plus</span>
 			</Title>
 		</Box>
