@@ -1,21 +1,12 @@
-# ShufflePlus
-[Check it out here!](https://noelcserepy.github.io/shufflePlus/)
-![](ShufflePlus_Screenshot.PNG)
+ShufflePlus is a editing tool for Spotify playlists that adds extra features such as playlist sorting, merging and archiving.
 
-## What is ShufflePlus?
+## How & Why
 
-ShufflePlus allows users to re-order their Spotify playlists according to track features such as energy and positivity. 
-This adds a feeling of progression when listening to a whole playlist. ShufflePlus also reduces occurences of the jarring effect 
-that ill-matched tracks have when played back-to-back. 
+This was one of my first ever coding projects and I decided to re-make it with new features, a new look and using new tools. The app will be primarily client-side as it gets all its data directly from the Spotify API. Necessary session data will be stored in the state using Zustand and no user data will be stored in a database.
 
+- For the frontend, I am using Next.js and React.
+- Zustand handles state for deeply nested components.
+- Deployed with Vercel.
+- Mantine is helping out with the styling.
 
-## Prerequisites
-
-You can use ShufflePlus if you have a Spotify account and a playlist you would like to sort. That's it.
-
-
-## Technologies Used
-
-HTML5, CSS3, JavaScript and jQuery
-
-
+More is to come.
