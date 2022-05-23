@@ -7,6 +7,7 @@ import {
 	Text,
 	useMantineTheme,
 } from "@mantine/core";
+import { useEffect } from "react";
 import { Trash } from "tabler-icons-react";
 import useStore from "../../../lib/store";
 

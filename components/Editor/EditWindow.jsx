@@ -23,7 +23,9 @@ function EditWindow() {
 		};
 
 		if (currentPlaylist) {
-			fetchPlaylistTracks();
+			if (!currentPlaylist.edited) {
+				fetchPlaylistTracks();
+			}
 		}
 	}, [session, currentPlaylist]);
 
