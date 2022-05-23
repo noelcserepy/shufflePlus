@@ -32,8 +32,8 @@ function CoverPage() {
 			</Box>
 
 			<div className="animContainer">
-				{coverImages.map(c => (
-					<img src={c} className="cover" />
+				{coverImages.map((c, i) => (
+					<img key={c + i} src={c} className="cover" />
 				))}
 			</div>
 		</Box>
