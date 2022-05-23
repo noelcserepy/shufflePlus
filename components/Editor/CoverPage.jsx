@@ -1,11 +1,10 @@
 import { Box, Image, Title, useMantineTheme } from "@mantine/core";
 import useStore from "../../lib/store";
+import CoverImages from "../Common/CoverImages";
 
 function CoverPage() {
-	const playlists = useStore(state => state.playlists);
 	const theme = useMantineTheme();
 	const { dark } = theme.colors;
-	const coverImages = playlists.map(p => p.images[0].url).slice(0, 7);
 
 	return (
 		<Box
@@ -30,12 +29,7 @@ function CoverPage() {
 					}}
 				/>
 			</Box>
-
-			<div className="animContainer">
-				{coverImages.map((c, i) => (
-					<img key={c + i} src={c} className="cover" />
-				))}
-			</div>
+			<CoverImages />
 		</Box>
 	);
 }

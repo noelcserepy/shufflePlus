@@ -1,13 +1,6 @@
-import {
-	Box,
-	Button,
-	Image,
-	MediaQuery,
-	Text,
-	Title,
-	useMantineTheme,
-} from "@mantine/core";
+import { Box, Button, Text, Title, useMantineTheme } from "@mantine/core";
 import { getProviders, signIn, useSession } from "next-auth/react";
+import CoverImages from "../components/Common/CoverImages";
 import Editor from "../components/Editor";
 
 export async function getServerSideProps() {
@@ -28,7 +21,7 @@ export default function Home() {
 	if (!session)
 		return (
 			<Box
-				px={200}
+				px={"10%"}
 				pt={36}
 				sx={{
 					overflow: "hidden",
@@ -58,12 +51,7 @@ export default function Home() {
 						No new account needed.
 					</Text>
 				</Box>
-				<MediaQuery smallerThan="xl" styles={{ display: "none" }}>
-					<Image
-						src="/albums.svg"
-						sx={{ position: "absolute", top: 0, right: 0, height: "100vh" }}
-					/>
-				</MediaQuery>
+				<CoverImages />
 			</Box>
 		);
 	if (session) return <Editor />;
